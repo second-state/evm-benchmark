@@ -12,7 +12,7 @@ protected:
     std::string getTmpDir();
     std::string callMakefile();
 public:
-    virtual std::string getMakefileName() { assert(false); };
+	virtual std::string getMakefileName() { assert(false); return ""; };
     virtual Testcase build(std::string source_path) = 0;
     virtual std::vector<std::string> acceptExtensions() = 0;
     Builder(){};
