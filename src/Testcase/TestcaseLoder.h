@@ -1,10 +1,13 @@
+#include<algorithm>
 #include<string>
 #include<filesystem>
+#include<fstream>
 #include<functional>
 #include<string>
 #include<iostream>
 
 #include<Common/Algorithm.h>
+#include<Common/FileUtils.h>
 #include<Filesystem/Fileiterator.h>
 #include<Testcase/Testcase.h>
 #include<Builder/builder.h>
@@ -20,12 +23,19 @@ public:
     TestcaseLoader(std::string _base):m_base(_base)
     {
         m_builder.emplace_back(new BinaryBuilder);
+        m_builder.emplace_back(new LityBuilder);
+        m_builder.emplace_back(new SoldityBuilder);
     }
 
     ~TestcaseLoader()
     {
         for(Builder *ptr:m_builder)
             delete ptr;
+    }
+
+    void addBuilder(Builder *_builder)
+    {
+        m_builder.emplace_back(_builder);
     }
 
     void clear()
@@ -41,14 +51,23 @@ public:
             {
                 const std::string ext = file.extension().string();
                 const std::string full_name = file.string();
-                std::cout<< ext <<'\t' << full_name << std::endl;
 
                 for(Builder *ptr:m_builder)
                 {
                     if( contain( ptr->acceptExtensions(), ext ) )
                     {
-                        std::cout<<"Accepted"<<std::endl;
-                        m_testcases.emplace_back( ptr->build(full_name) );
+                        std::string data = GetFileContent(full_name);
+                        if( ptr->build(data) )
+                        {
+                            m_testcases.emplace_back( ptr->getTestcase() );
+                            std::cout<<"Build "<<full_name<<" with "<<ptr->getClassName()<<" SUCCESS!"<<std::endl;
+                            std::cout<<"=========\n"<<m_testcases.back().m_binary<<"\n===============\n"<<std::endl;
+                        }
+                        else
+                        {
+                            std::cout<<"Build "<<full_name<<" with "<<ptr->getClassName()<<" FAIL!"<<std::endl;
+                        }
+
                     }
                 }
             }
