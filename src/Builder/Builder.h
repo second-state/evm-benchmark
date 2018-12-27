@@ -19,7 +19,7 @@ protected:
 
     static std::string getScriptExtenstion()
     {
-#ifdef __WIN32
+#ifdef _WIN32
         return ".bat";
 #else
         return ".sh";
@@ -38,7 +38,7 @@ protected:
         
         if( !fs::is_directory(workPath) )
             return false;
-        
+
         bool result = false;
         std::string tmpInputFilename  = "a.tmp";
         std::string tmpOutputFilename = "a.bin";
