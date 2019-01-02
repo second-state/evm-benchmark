@@ -52,7 +52,7 @@ protected:
             fout.close();
 
             std::string executeCommand = scriptPath + " " + tmpInputFilename + " " + tmpOutputFilename;
-            system(executeCommand.c_str());
+            [[maybe_unused]] int sys = system(executeCommand.c_str());
 
             if( testScriptRunSuccess(tmpOutputFilename) )
                 result = true;
