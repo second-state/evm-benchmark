@@ -43,9 +43,78 @@ public:
         out << "Version: " << m_instance->version << std::endl;
     }
 
+    static void free_result_output_data(const struct evmc_result* result)
+    {
+        free((uint8_t*)result->output_data);
+    }
+
     evmc_result execute(const std::vector<uint8_t> &opcode, const std::vector<uint8_t> &input)
     {
+        evmc_host_interface ehost;
+        evmc_context econtext{&ehost}, *context = &econtext;
+        evmc_message emsg, *msg = &emsg;
+        enum evmc_revision rev = EVMC_LATEST_REVISION;
 
+        msg->kind = EVMC_CALL;
+        msg->flags = 0;
+        msg->depth = 20;
+        msg->gas   = 71222; 
+        msg->input_data = input.data();
+        msg->input_size = input.size();
+
+        struct evmc_result ret = {.status_code = EVMC_INTERNAL_ERROR};
+        if (opcode.empty())
+        {
+            // In case of empty code return a fancy error message.
+            const char* error = rev == EVMC_BYZANTIUM ? "Welcome to Byzantium!" : "Hello Ethereum!";
+            ret.output_data = (const uint8_t*)error;
+            ret.output_size = strlen(error);
+            ret.status_code = EVMC_FAILURE;
+            ret.release = NULL;  // We don't need to release the constant messages.
+            return ret;
+        }
+        
+        // Simulate executing by checking for some code patterns.
+        // Solidity inline assembly is used in the examples instead of EVM bytecode.
+
+        // Assembly: `{ mstore(0, address()) return(0, msize()) }`.
+        const char return_address[] = "\x30\x60\x00\x52\x59\x60\x00\xf3";
+
+        // Assembly: `{ sstore(0, add(sload(0), 1)) }`
+        const char counter[] = "\x60\x01\x60\x00\x54\x01\x60\x00\x55";
+
+        if (opcode.size() == strlen(return_address) &&
+            strncmp((const char*)opcode.data(), return_address, strlen(return_address)) == 0)
+        {
+            static const size_t address_size = sizeof(msg->destination);
+            uint8_t* output_data = (uint8_t*)malloc(address_size);
+            if (!output_data)
+            {
+                // malloc failed, report internal error.
+                ret.status_code = EVMC_INTERNAL_ERROR;
+                return ret;
+            }
+            memcpy(output_data, &msg->destination, address_size);
+            ret.status_code = EVMC_SUCCESS;
+            ret.output_data = output_data;
+            ret.output_size = address_size;
+            ret.release = &free_result_output_data;
+            return ret;
+        }
+        else if (opcode.size() == strlen(counter) && strncmp((const char*)opcode.data(), counter, strlen(counter)) == 0)
+        {
+            const evmc_bytes32 key = {{0}};
+            evmc_bytes32 value = context->host->get_storage(context, &msg->destination, &key);
+            value.bytes[31]++;
+            context->host->set_storage(context, &msg->destination, &key, &value);
+            ret.status_code = EVMC_SUCCESS;
+            return ret;
+        }
+
+        ret.status_code = EVMC_FAILURE;
+        ret.gas_left = 0;
+
+        return ret;
     }
 
     void test()

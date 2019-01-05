@@ -4,10 +4,10 @@ set(MAIN_FILE main.cpp)
 set(MAIN_EXEC aaaa)
 add_executable(${MAIN_EXEC} ${MAIN_FILE})
 
-#add_subdirectory(Builder)
+add_subdirectory(Builder)
 #add_subdirectory(Common)
 add_subdirectory(Core)
-#add_subdirectory(Filesystem)
+add_subdirectory(Filesystem)
 add_subdirectory(Testcase)
 add_subdirectory(Third/EVMC)
 

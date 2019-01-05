@@ -8,9 +8,9 @@
 
 #include<Common/Algorithm.h>
 #include<Common/FileUtils.h>
-#include<Filesystem/Fileiterator.h>
+#include<Filesystem/FileIterator.h>
 #include<Testcase/Testcase.h>
-#include<Builder/builder.h>
+#include<Builder/Builder.h>
 
 namespace fs = std::filesystem;
 
