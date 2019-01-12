@@ -8,14 +8,13 @@
 class TestcaseLoader
 {
 public:
-    TestcaseLoader(std::string _base);
+    TestcaseLoader();
     ~TestcaseLoader();
     void addBuilder(Builder *_builder);
     void clear();
-    void load();
+    void load(std::string _base);
     const std::vector<Testcase> &testcases();
 private:
-    std::string m_base;
     std::vector<Testcase> m_testcases;
     std::vector<Builder*> m_builder;
 };

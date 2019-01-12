@@ -32,7 +32,7 @@ protected:
         fs::path oldCurrentPath(fs::current_path());
         fs::path workPath("./temp");
 
-        std::string scriptPath = oldCurrentPath.string() + "/scripts/" + getClassName() + getScriptExtenstion();
+        std::string scriptPath = oldCurrentPath.string() + "/scripts/" + getClassName() + getScriptExtenstion() + " >/dev/null 2>&1";
 
         if( !fs::exists(workPath) )
             fs::create_directory(workPath);
@@ -52,6 +52,7 @@ protected:
             fout << data ;
             fout.close();
 
+            //TODO: Rewrite this!
             std::string executeCommand = scriptPath + " " + tmpInputFilename + " " + tmpOutputFilename;
             [[maybe_unused]] int sys = system(executeCommand.c_str());
 

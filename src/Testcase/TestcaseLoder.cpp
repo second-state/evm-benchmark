@@ -16,11 +16,9 @@
 
 namespace fs = std::filesystem;
 
-TestcaseLoader::TestcaseLoader(std::string _base):m_base(_base)
+TestcaseLoader::TestcaseLoader()
 {
-    m_builder.emplace_back(new BinaryBuilder);
-    m_builder.emplace_back(new LityBuilder);
-    m_builder.emplace_back(new SoldityBuilder);
+
 }
 
 TestcaseLoader::~TestcaseLoader()
@@ -39,10 +37,10 @@ void TestcaseLoader::clear()
     m_testcases.clear();
 }
 
-void TestcaseLoader::load()
+void TestcaseLoader::load(std::string _base)
 {
     FileIterator fit;
-    fit.visit(m_base, [&](fs::path file){
+    fit.visit(_base, [&](fs::path file){
         if( file.has_extension() )
         {
             const std::string ext = file.extension().string();
@@ -62,6 +60,7 @@ void TestcaseLoader::load()
                     if( ptr->build(source) )
                     {
                         m_testcases.emplace_back( ptr->getTestcase() );
+                        m_testcases.back().m_path = full_name;
                     }
                     else
                     {

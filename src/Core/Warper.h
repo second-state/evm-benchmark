@@ -46,7 +46,7 @@ public:
     {
         evmc_instance* instance = getNewEVMCInstance();
 
-        out << "VM [" << m_vmpath << "]" << std::endl;
+        out << "=== VM [" << m_vmpath << "]" << std::endl;
         if( !isOpen() || !instance )
         {
             out << "Load Failed! (" << m_error << ")" << std::endl;
