@@ -2,9 +2,8 @@
 
 #include<string>
 
-class Testcase
+struct Testcase
 {
-public:
     Testcase(std::string _hexopcode):m_binary(_hexopcode){}
 
     std::string m_binary;

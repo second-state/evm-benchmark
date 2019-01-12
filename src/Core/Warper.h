@@ -89,7 +89,7 @@ public:
         cout<<"O="<<result.output_size<<endl;
         for(int i=0;i<result.output_size;++i)
         {
-            cout<< std::hex << (int) result.output_data[i] << ' '<<endl; 
+            cout<< std::hex << (unsigned)result.output_data[i] << ' '; 
         }
 
         return result;
