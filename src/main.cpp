@@ -9,7 +9,7 @@
 
 int main()
 {
-    std::string testcase_base = "./test";
+    std::string testcase_base = "./testcase";
     std::string evmc_path = "./bin/libaleth-interpreter.so";
 
     Benchmark bm(testcase_base, evmc_path, std::cout, std::cerr);
@@ -19,5 +19,5 @@ int main()
     //bm.addBuilder(new SoldityBuilder);
 
     bm.run();
-    
+
 }
