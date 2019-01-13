@@ -1,11 +1,15 @@
 #pragma once
 
-#include<string>
+#include <string>
+#include <vector>
 
 struct Testcase
 {
-    Testcase(std::string _hexopcode):m_binary(_hexopcode){}
+    std::string name;
+    std::string source_path;
+    std::string json_path;
 
-    std::string m_binary;
-    std::string m_path;
+    std::vector<uint8_t> input;
+    std::vector<uint8_t> expect;
+    std::vector<uint8_t> binary;
 };

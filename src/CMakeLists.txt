@@ -11,6 +11,8 @@ add_subdirectory(Filesystem)
 add_subdirectory(Testcase)
 add_subdirectory(Third/EVMC)
 
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+add_subdirectory(Third/nlohmann_json)
 
 target_link_libraries(${MAIN_EXEC} Common loader instructions)
 target_link_libraries(${MAIN_EXEC} Testcase Core)

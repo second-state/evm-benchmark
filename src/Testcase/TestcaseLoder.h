@@ -1,9 +1,10 @@
 #pragma once
 
-#include<Testcase/Testcase.h>
-#include<Builder/Builder.h>
+#include <Testcase/Testcase.h>
+#include <Builder/Builder.h>
 
-#include<string>
+#include <ostream>
+#include <string>
 
 class TestcaseLoader
 {
@@ -12,7 +13,7 @@ public:
     ~TestcaseLoader();
     void addBuilder(Builder *_builder);
     void clear();
-    void load(std::string _base);
+    bool load(std::string _base, std::ostream &derr);
     const std::vector<Testcase> &testcases();
 private:
     std::vector<Testcase> m_testcases;

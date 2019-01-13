@@ -19,14 +19,5 @@ int main()
     //bm.addBuilder(new SoldityBuilder);
 
     bm.run();
-
-    std::cout<<"====";
-
-    VMInterface vim("./bin/libaleth-interpreter.so");
-    vim.showVMInformation(std::cout);
-
-    std::string test = "7FFFFFFF7122FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFABCDE600052596000F3";
-    std::vector<uint8_t> code = hex2Uint8Vec(test), in;
-
-    vim.execute(code, in);
+    
 }

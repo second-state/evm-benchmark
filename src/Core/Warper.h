@@ -3,6 +3,7 @@
 #include <Third/EVMC/include/evmc/loader.h>
 #include <Third/EVMC/include/evmc/evmc.h>
 
+#include <ctime>
 #include <cstring>
 #include <string>
 #include <ostream>
@@ -63,34 +64,16 @@ public:
         free((uint8_t*)result->output_data);
     }
 
-    evmc_result execute(const std::vector<uint8_t> &opcode, const std::vector<uint8_t> &input)
+    evmc_result execute(const std::vector<uint8_t> &opcode, const evmc_message &msg, time_t &runtime)
     {
         evmc_instance* instance =  getNewEVMCInstance();
         evmc_context *context = EVMCContent::getNewContents();
 
-        //TODO: move evmc_message instead of input
-        evmc_message msg;
-        const evmc_address addr = {{0, 1, 2}};
-        const evmc_uint256be value = {{1, 0}};
-
-        msg.sender = addr;
-        msg.destination = addr;
-        msg.value = value;
-        msg.input_data = input.data();
-        msg.input_size = input.size();
-        msg.gas = 7120000;
-        msg.depth = 20;
-
         evmc_execute_fn exec = instance->execute;
-        struct evmc_result result = exec(instance, context, EVMC_HOMESTEAD, &msg, opcode.data(), opcode.size());
 
-        cout<<"S="<<result.status_code<<endl;
-        cout<<"G="<<result.gas_left<<endl;
-        cout<<"O="<<result.output_size<<endl;
-        for(int i=0;i<result.output_size;++i)
-        {
-            cout<< std::hex << (unsigned)result.output_data[i] << ' '; 
-        }
+        runtime = clock();
+        evmc_result result = exec(instance, context, EVMC_HOMESTEAD, &msg, opcode.data(), opcode.size());
+        runtime = clock() - runtime;
 
         return result;
     }

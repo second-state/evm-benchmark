@@ -4,5 +4,6 @@ project(ETH_Benckmark CXX)
 set (CMAKE_CXX_STANDARD 17)
 
 include_directories(src)
+include_directories(src/Third/nlohmann_json/include)
 
 add_subdirectory(src)
