@@ -2,5 +2,5 @@
     "name"   : "Hello World",
 	"source" : "binary.bin",
 	"input"  : "",
-    "expect" : "ffffff7122fffffffffffffffffffffffffffffffffffffffffffffffffabcdf"
+    "expect" : "ffffff7122fffffffffffffffffffffffffffffffffffffffffffffffffabcde"
 }
