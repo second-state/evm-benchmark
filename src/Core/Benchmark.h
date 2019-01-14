@@ -136,14 +136,36 @@ bool Benchmark::genEnvInfo()
 bool Benchmark::runTests()
 {
     int counter = 0;
-    int testtimes = 100000;
-    dout() << "===============TESTS==================\n";
+    int testtimes = 100;
+    bool all_accept = true;
+
+    dout() << std::setprecision(10);
+    dout() << "===================================TESTS=================================\n";
+    dout() << "|";
+    dout() << std::setw(5)  << std::left << "ID" << "| " ;
+    dout() << std::setw(20) << std::left << "Testcase" << "| ";
+    dout() << std::setw(10+11) << std::left << "Average Runtime" << "| ";
+    dout() << std::setw(10+9) << std::left << "Speed" << "| ";
+    dout() << std::endl;
+
+    dout() << std::setfill('-');
+    dout() << "|";
+    dout() << std::setw(5)  << "" << "| " ;
+    dout() << std::setw(20) << "" << "| ";
+    dout() << std::setw(10+11) << "" << "| ";
+    dout() << std::setw(10+9) << "" << "| ";
+    dout() << std::endl;
+
+    dout() << std::setfill(' ');
     for(auto const &test : m_casesloder.testcases())
     {
-        dout() << ++counter << "\t| " <<  test.name << "\t| ";
+        //Print title
+        dout() << "|";
+        dout() << std::setw(5)  << ++counter << "| " ;
+        dout() << std::setw(20) << std::left << test.name.substr(0,19) << "| ";
         
         bool accept = true;
-        time_t runtime = 0;
+        std::chrono::nanoseconds runtime {0};
 
         evmc_message msg = {};
         const evmc_address addr = {{0, 1, 2}};
@@ -160,9 +182,9 @@ bool Benchmark::runTests()
         evmc_result result;
         for(int i=0 ; i < testtimes ; ++i)
         {
-            time_t times;
-            result = m_vm.execute(test.binary, msg, times);
-            runtime += times;
+            std::chrono::nanoseconds temp;
+            result = m_vm.execute(test.binary, msg, temp);
+            runtime += temp;
 
             if( result.output_size != test.expect.size() )
             {
@@ -180,26 +202,29 @@ bool Benchmark::runTests()
         if( accept )
         {
             auto gas_used = msg.gas - result.gas_left;
-            dout() << 1.0 * ( runtime + 1) / testtimes / CLOCKS_PER_SEC * 1000  <<" ms/per | ";
-            dout() << 1.0 * gas_used / 1E6 / ( 1.0 * (runtime+1) / testtimes / CLOCKS_PER_SEC )  <<" MG/s | ";
+            double runtime_once_ms = 1.0 * ( runtime.count() + 1 ) / testtimes / 1E9 * 1000;
+            double gas_speed = 1.0 * gas_used / 1E6 / ( 1.0 * (runtime.count()+1) / testtimes / 1E9 );
+            dout() << std::setw(13) << runtime_once_ms  <<" ms/per | ";
+            dout() << std::setw(13) << gas_speed  <<" MG/s | ";
         }
         else
         {
-            dout() << "\nFail! Output Miss Match! \t| ";
+            dout() << std::setw(42)<< "Fail! Output Miss Match! " << "|\n";
 
-            dout() << ">>>>VM:\n";
+            dout() << ">>>VM:\n";
             for(int i=0;i<result.output_size;++i)
                 dout() << std::hex << std::setw(2) << std::setfill('0') << (unsigned)result.output_data[i]; 
             dout()<<"\n";
             for(unsigned d:test.expect)
                 dout() << std::hex << std::setw(2) << std::setfill('0') << d; 
-            dout() << "\n<<<ECPECT\n";
-            return false;
+            dout() << "\n<<<ECPECT";
+            all_accept = false;
         }
-
         dout() << "\n";
     }
-    return true;
+    dout() << "=========================================================================\n";
+    dout().unsetf(std::ios::fixed);
+    return all_accept;
 }
 
 std::ostream& Benchmark::dout()

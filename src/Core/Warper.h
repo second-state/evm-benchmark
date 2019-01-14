@@ -4,6 +4,7 @@
 #include <Third/EVMC/include/evmc/evmc.h>
 
 #include <ctime>
+#include <chrono>
 #include <cstring>
 #include <string>
 #include <ostream>
@@ -64,17 +65,18 @@ public:
         free((uint8_t*)result->output_data);
     }
 
-    evmc_result execute(const std::vector<uint8_t> &opcode, const evmc_message &msg, time_t &runtime)
+    evmc_result execute(const std::vector<uint8_t> &opcode, const evmc_message &msg, std::chrono::nanoseconds &runtime)
     {
         evmc_instance* instance =  getNewEVMCInstance();
         evmc_context *context = EVMCContent::getNewContents();
 
         evmc_execute_fn exec = instance->execute;
 
-        runtime = clock();
+        auto t_start = std::chrono::high_resolution_clock::now();
         evmc_result result = exec(instance, context, EVMC_HOMESTEAD, &msg, opcode.data(), opcode.size());
-        runtime = clock() - runtime;
+        auto t_end   = std::chrono::high_resolution_clock::now();
 
+        runtime = std::chrono::duration_cast<std::chrono::nanoseconds>(t_end - t_start);
         return result;
     }
 };
