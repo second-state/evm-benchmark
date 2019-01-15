@@ -161,7 +161,7 @@ bool Benchmark::runTests()
     {
         //Print title
         dout() << "|";
-        dout() << std::setw(5)  << ++counter << "| " ;
+        dout() << std::left << std::setw(5)  << ++counter << "| " ;
         dout() << std::setw(20) << std::left << test.name.substr(0,19) << "| ";
         
         bool accept = true;
@@ -176,7 +176,7 @@ bool Benchmark::runTests()
         msg.value = value;
         msg.input_data = test.input.data();
         msg.input_size = test.input.size();
-        msg.gas = 7120000;
+        msg.gas = 100000000;
         msg.depth = 1024;
 
         evmc_result result;
@@ -185,6 +185,12 @@ bool Benchmark::runTests()
             std::chrono::nanoseconds temp;
             result = m_vm.execute(test.binary, msg, temp);
             runtime += temp;
+
+            if( result.status_code != EVMC_SUCCESS )
+            {
+                accept = false;
+                break;
+            }
 
             if( result.output_size != test.expect.size() )
             {
@@ -197,6 +203,8 @@ bool Benchmark::runTests()
                 accept = false;
                 break;
             }
+
+            
         }
         
         if( accept )
@@ -207,19 +215,28 @@ bool Benchmark::runTests()
             dout() << std::setw(13) << runtime_once_ms  <<" ms/per | ";
             dout() << std::setw(13) << gas_speed  <<" MG/s | ";
         }
+        else if( result.status_code != EVMC_SUCCESS )
+        {
+            dout() << std::setw(42)<< "Runtime ERROR! : " << result.status_code << "|\n";
+        }
         else
         {
             dout() << std::setw(42)<< "Fail! Output Miss Match! " << "|\n";
 
             dout() << ">>>VM:\n";
             for(int i=0;i<result.output_size;++i)
-                dout() << std::hex << std::setw(2) << std::setfill('0') << (unsigned)result.output_data[i]; 
+                dout() << std::hex << std::setw(2) << std::setfill('0') << std::right << (unsigned)result.output_data[i]; 
             dout()<<"\n";
             for(unsigned d:test.expect)
-                dout() << std::hex << std::setw(2) << std::setfill('0') << d; 
+                dout() << std::hex << std::setw(2) << std::setfill('0') << std::right << d; 
             dout() << "\n<<<ECPECT";
+
+            dout() << std::setfill(' ');
             all_accept = false;
         }
+        
+        if( result.release )
+            result.release(&result);
         dout() << "\n";
     }
     dout() << "=========================================================================\n";
