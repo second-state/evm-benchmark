@@ -1,0 +1,6 @@
+{
+    "name"   : "simple contract function B",
+	"source" : "simple_contract.bin",
+	"input"  : "7323febe0000007122fffffffffffffffffffffffffffffffffffffffffffffffffabcde",
+    "expect" : "000000e245fffffffffffffffffffffffffffffffffffffffffffffffff579bc"
+}
