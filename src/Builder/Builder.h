@@ -32,7 +32,7 @@ protected:
         fs::path oldCurrentPath(fs::current_path());
         fs::path workPath("./temp");
 
-        std::string scriptPath = oldCurrentPath.string() + "/scripts/" + getClassName() + getScriptExtenstion() + " >/dev/null 2>&1";
+        std::string scriptPath = oldCurrentPath.string() + "/scripts/" + getClassName() + getScriptExtenstion();
 
         if( !fs::exists(workPath) )
             fs::create_directory(workPath);

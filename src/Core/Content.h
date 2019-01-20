@@ -141,23 +141,29 @@ class EVMCContent
 public:
     static evmc_context* getNewContents()
     {
-        evmc_host_interface *host = new evmc_host_interface;
-        VirtualEVMCContent *content = new VirtualEVMCContent;
+        static evmc_context* pcontent = nullptr;
+        if( pcontent == nullptr )
+        {
+            evmc_host_interface *host = new evmc_host_interface;
+            VirtualEVMCContent *content = new VirtualEVMCContent;
 
-        host->account_exists    = EVMCContent::account_exists;
-        host->get_storage       = EVMCContent::get_storage;
-        host->set_storage       = EVMCContent::set_storage;
-        host->get_balance       = EVMCContent::get_balance;
-        host->get_code_size     = EVMCContent::get_code_size;
-        host->get_code_hash     = EVMCContent::get_code_hash;
-        host->copy_code         = EVMCContent::copy_code;
-        host->selfdestruct      = EVMCContent::selfdestruct;
-        host->call              = EVMCContent::call;
-        host->get_tx_context    = EVMCContent::get_tx_context;
-        host->get_block_hash    = EVMCContent::get_block_hash;
-        host->emit_log          = EVMCContent::emit_log;
+            host->account_exists    = EVMCContent::account_exists;
+            host->get_storage       = EVMCContent::get_storage;
+            host->set_storage       = EVMCContent::set_storage;
+            host->get_balance       = EVMCContent::get_balance;
+            host->get_code_size     = EVMCContent::get_code_size;
+            host->get_code_hash     = EVMCContent::get_code_hash;
+            host->copy_code         = EVMCContent::copy_code;
+            host->selfdestruct      = EVMCContent::selfdestruct;
+            host->call              = EVMCContent::call;
+            host->get_tx_context    = EVMCContent::get_tx_context;
+            host->get_block_hash    = EVMCContent::get_block_hash;
+            host->emit_log          = EVMCContent::emit_log;
 
-        content->host = host;
-        return (evmc_context*)content;
+            content->host = host;
+            pcontent = (evmc_context*)content;
+        }
+
+        return pcontent;
     }
 };
