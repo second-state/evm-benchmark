@@ -169,7 +169,7 @@ bool Benchmark::runTests()
 
         evmc_message msg = {};
         const evmc_address addr = {{0, 1, 2}};
-        const evmc_uint256be value = {{1, 0}};
+        const evmc_uint256be value = {{0, 0}};
 
         msg.sender = addr;
         msg.destination = addr;
