@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.8)
 
 set(MAIN_FILE main.cpp)
-set(MAIN_EXEC aaaa)
+set(MAIN_EXEC ejudge)
 add_executable(${MAIN_EXEC} ${MAIN_FILE})
 
 add_subdirectory(Builder)
