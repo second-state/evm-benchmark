@@ -1,0 +1,6 @@
+{
+    "name"   : "ERC20 --evm-version spuriousDragon",
+	"source" : "ERC20.bin",
+	"input"  : "b965c84b00000000000000000000000000000000000000000000000000000000043ed6f2",
+    "expect" : "097b854449dcc139b0081ec4bacb55e9e5fe22da723124aa93274b530f5a2d1e"
+}
