@@ -161,7 +161,7 @@ bool Benchmark::runTests()
     {
         //Print title
         dout() << "|";
-        dout() << std::left << std::setw(5)  << ++counter << "| " ;
+        dout() << std::left << std::setw(5) << std::dec << ++counter << "| " ;
         dout() << std::setw(20) << std::left << test.name.substr(0,19) << "| ";
         
         bool accept = true;
@@ -217,7 +217,7 @@ bool Benchmark::runTests()
         }
         else if( result.status_code != EVMC_SUCCESS )
         {
-            dout() << std::setw(42)<< "Runtime ERROR! : " << result.status_code << "|\n";
+            dout() << std::setw(41)<< "Runtime ERROR! : " << result.status_code << "|";
         }
         else
         {
