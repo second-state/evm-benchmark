@@ -1,6 +1,6 @@
 {
     "name"   : "Hello World",
-	"source" : "1.bin",
-	"input"  : "",
+    "source" : "1.bin",
+    "input"  : "",
     "expect" : "0000000000000000000000000000000000000000000000000000000000abcdef"
 }

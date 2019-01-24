@@ -1,6 +1,6 @@
 {
     "name"   : "math op & SHA3 hash",
-	"source" : "3.bin",
-	"input"  : "",
+    "source" : "3.bin",
+    "input"  : "",
     "expect" : "0afa926dd80666aad5c8300ee7e35c50f3ee1d5e930ff36cbc9385a7920dd04d"
 }
