@@ -30,19 +30,25 @@ After build, `ejudge` executable file will place at `build/src/ejudge`
 
 ## Run tests
 
-* Basic usage
+### Requirements 
+
+* a VM file
+  * You can download `libaleth-interpreter.so`  from [aleth](https://github.com/ethereum/aleth/releases) for demo ejudge.
+
+* (option) Solidity compiler `solc`
+
+### Basic usage
 
 `./ejudge TESTCASES_PATH VMFILE`
 
-* Test with solidity source
+### Test with solidity source
 
 set environment variable `SOLIDITYC` to where the `solc` at.
 
 ```bash
-export SOLIDITYC="/mnt/d/User/Documents/Git/EthBrenchmark/bin/solc-static-linux" 
+export SOLIDITYC="<Your/Solc/Path>" 
 
 ./ejudge ./testcase/ ./bin/libaleth-interpreter.so
- 
 ```
 
 ## Todos

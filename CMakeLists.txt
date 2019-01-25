@@ -5,5 +5,6 @@ set (CMAKE_CXX_STANDARD 17)
 
 include_directories(src)
 include_directories(src/Third/nlohmann_json/include)
+include_directories(src/Third/EVMC/include)
 
 add_subdirectory(src)

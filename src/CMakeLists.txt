@@ -16,6 +16,7 @@ add_subdirectory(Third/nlohmann_json)
 
 target_link_libraries(${MAIN_EXEC} Common loader instructions)
 target_link_libraries(${MAIN_EXEC} Testcase Core)
+target_link_libraries(${MAIN_EXEC} evmc)
 if (NOT MSVC)
     target_link_libraries(${MAIN_EXEC} stdc++fs)
 endif()

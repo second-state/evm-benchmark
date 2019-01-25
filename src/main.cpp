@@ -9,7 +9,7 @@
 
 void help()
 {
-    cout << "./ejudge TESTCASES_PATH VMFILE" << endl;
+    std::cout << "./ejudge TESTCASES_PATH VMFILE" << std::endl;
 }
 
 int main(int argc, char *argv[])
