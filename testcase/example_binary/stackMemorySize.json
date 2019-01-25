@@ -1,0 +1,6 @@
+{
+    "name"   : "stack & memory size",
+    "source" : "stackMemorySize.bin",
+    "input"  : "",
+    "expect" : "0000000000000000000000000000000000000000000000000000000000007fc0"
+}
