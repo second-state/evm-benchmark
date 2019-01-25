@@ -3,10 +3,10 @@
 BUILDFILE=$1
 OUTNAME=$2
 
-if [ -z ${SOLDITYC+x} ]; then
-SOLDITYC="solc"
+if [ -z ${SOLIDITYC+x} ]; then
+SOLIDITYC="solc"
 fi
 
-$SOLDITYC --version
-$SOLDITYC $BUILDFILE --bin-runtime -o ./ --overwrite
+$SOLIDITYC --version
+$SOLIDITYC $BUILDFILE --bin-runtime -o ./ --overwrite
 mv *.bin-runtime $OUTNAME

@@ -36,10 +36,10 @@ After build, `ejudge` executable file will place at `build/src/ejudge`
 
 * Test with solidity source
 
-set environment variable `SOLDITYC` to where the `solc` at.
+set environment variable `SOLIDITYC` to where the `solc` at.
 
 ```bash
-export SOLDITYC="/mnt/d/User/Documents/Git/EthBrenchmark/bin/solc-static-linux" 
+export SOLIDITYC="/mnt/d/User/Documents/Git/EthBrenchmark/bin/solc-static-linux" 
 
 ./ejudge ./testcase/ ./bin/libaleth-interpreter.so
  
