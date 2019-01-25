@@ -104,7 +104,7 @@ bool Benchmark::genEnvInfo()
 
     // Project Information
     dout() << "=== Benchmark\n";
-    dout() << "ejudge V0.01\n";
+    dout() << "ejudge V1.0.0\n";
     dout() << "Build:" << __DATE__ " " __TIME__ "\n";
     m_vm.showVMInformation(dout());
 
