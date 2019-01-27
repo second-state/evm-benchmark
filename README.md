@@ -18,8 +18,7 @@ C++ 17 Support Compiler
 ## How to build
 
 ```bash
-git clone https://xxxx/benchmarks.git
-cd benchmarks
+git submodule update --init --recursive
 mkdir build
 cd build
 cmake ..
@@ -30,25 +29,27 @@ After build, `ejudge` executable file will place at `build/src/ejudge`
 
 ## Run tests
 
-### Requirements 
+### Requirements
 
-* a VM file
-  * You can download `libaleth-interpreter.so`  from [aleth](https://github.com/ethereum/aleth/releases) for demo ejudge.
+* Prepare a VM runtime file
+  * Download latest [aleth release](https://github.com/ethereum/aleth/releases).
+  * After unziping the archive, you can find the VM runtime in `lib/libaleth-interpreter.so`.
 
 * (option) Solidity compiler `solc`
 
 ### Basic usage
 
-`./ejudge TESTCASES_PATH VMFILE`
+`./ejudge <TESTCASES_PATH> <VMFILE_PATH>`
 
 ### Test with solidity source
 
 set environment variable `SOLIDITYC` to where the `solc` at.
 
 ```bash
-export SOLIDITYC="<Your/Solc/Path>" 
+export SOLIDITYC="<Your/Solc/Path>"
 
-./ejudge ./testcase/ ./bin/libaleth-interpreter.so
+./ejudge <TESTCASES_PATH> <VMFILE_PATH>
+# For example, ./ejudge ./testcase/ ./bin/libaleth-interpreter.so
 ```
 
 ## Todos
