@@ -13,6 +13,7 @@
 #include <Filesystem/FileIterator.h>
 #include <Testcase/Testcase.h>
 #include <Builder/Builder.h>
+#include <evmc/evmc.h>
 
 namespace fs = std::filesystem;
 
@@ -62,6 +63,16 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
             test.input       = hex2Uint8Vec(json["input"]);
             test.expect      = hex2Uint8Vec(json["expect"]);
             test.binary      = {};
+
+            if( json.count("expect_code") )
+            {
+                test.expect_code = evmc_status_code((int)json["expect_code"]);
+            }
+            else
+            {
+                test.expect_code = EVMC_SUCCESS;
+            }
+            
 
             fs::path source_path = test.source_path;
             if( source_path.is_relative() )
