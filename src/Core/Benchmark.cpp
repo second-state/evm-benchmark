@@ -157,9 +157,14 @@ bool Benchmark::runTests()
             result = m_vm.execute(test.binary, msg, temp);
             runtime += temp;
 
-            if( result.status_code != EVMC_SUCCESS )
+            if( result.status_code != test.expect_code )
             {
                 accept = false;
+                break;
+            }
+
+            if( test.expect_code != EVMC_SUCCESS )
+            {
                 break;
             }
 
@@ -186,9 +191,13 @@ bool Benchmark::runTests()
             dout() << std::setw(13) << runtime_once_ms  <<" ms/per | ";
             dout() << std::setw(13) << gas_speed  <<" MG/s | ";
         }
-        else if( result.status_code != EVMC_SUCCESS )
+        else if( result.status_code != test.expect_code )
         {
-            dout() << std::setw(41)<< "Runtime ERROR! : " << result.status_code << "|";
+            dout() << std::setw(41)<< "Fail! Result Status Code Miss Match!" << "|\n";
+            dout() << ">>>VM:\n";
+            dout() << evmc_status_code_map[result.status_code] << "\n";
+            dout() << evmc_status_code_map[test.expect_code] << "\n<<<ECPECT";
+            dout() << std::setfill(' ');
         }
         else
         {
