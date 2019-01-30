@@ -195,8 +195,8 @@ bool Benchmark::runTests()
         {
             dout() << std::setw(41)<< "Fail! Result Status Code Miss Match!" << "|\n";
             dout() << ">>>VM:\n";
-            dout() << evmc_status_code_map[result.status_code] << "\n";
-            dout() << evmc_status_code_map[test.expect_code] << "\n<<<ECPECT";
+            dout() << evmc_status_code_map.at(result.status_code) << "\n";
+            dout() << evmc_status_code_map.at(test.expect_code) << "\n<<<ECPECT";
             dout() << std::setfill(' ');
         }
         else
