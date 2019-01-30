@@ -36,7 +36,7 @@ private:
     std::ostream &m_stdout;
     std::ostream &m_stderr;
 
-    std::map<evmc_status_code, std::string> evmc_status_code_map={
+    const std::map<evmc_status_code, std::string> evmc_status_code_map = {
         {EVMC_SUCCESS, "EVMC_SUCCESS"},
         {EVMC_FAILURE, "EVMC_FAILURE"},
         {EVMC_REVERT, "EVMC_REVERT"},
