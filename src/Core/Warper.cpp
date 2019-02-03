@@ -62,7 +62,7 @@ evmc_result VMInterface::execute(const std::vector<uint8_t> &opcode, const evmc_
     evmc_execute_fn exec = instance->execute;
 
     auto t_start = std::chrono::high_resolution_clock::now();
-    evmc_result result = exec(instance, context, EVMC_LATEST_REVISION, &msg, opcode.data(), opcode.size());
+    evmc_result result = exec(instance, context, EVMC_MAX_REVISION, &msg, opcode.data(), opcode.size());
     auto t_end   = std::chrono::high_resolution_clock::now();
 
     runtime = std::chrono::duration_cast<std::chrono::nanoseconds>(t_end - t_start);
