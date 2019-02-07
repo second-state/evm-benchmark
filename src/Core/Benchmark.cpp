@@ -148,7 +148,7 @@ bool Benchmark::runTests()
         msg.input_data = test.input.data();
         msg.input_size = test.input.size();
         msg.gas = 100000000;
-        msg.depth = 1024;
+        msg.depth = 0;
 
         evmc_result result;
         for(int i=0 ; i < testtimes ; ++i)
