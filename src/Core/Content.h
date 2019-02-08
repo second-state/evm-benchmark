@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Third/EVMC/include/evmc/evmc.h>
-#include <Third/EVMC/include/evmc/helpers.hpp>
-
+#include <evmc/evmc.h>
+#include <evmc/helpers.hpp>
+#include <evmc/loader.h>
 #include <map>
 
 struct VirtualEVMCContent : evmc_context
@@ -17,6 +17,15 @@ struct VirtualEVMCContent : evmc_context
 
     evmc_tx_context tx_context = {};
     std::map<evmc_address, account> accounts;
+    evmc_instance* instance;
+
+    std::vector<uint8_t> _opcode; //TODO: Remove this
+
+    void clear()
+    {
+        accounts.clear();
+        instance = nullptr;
+    }
 };
 
 class EVMCContent
@@ -97,10 +106,20 @@ class EVMCContent
 
     static evmc_result call(evmc_context* context, const evmc_message* msg)
     {
-        (void)context;
-        (void)msg;
+        VirtualEVMCContent* host = reinterpret_cast<VirtualEVMCContent*>(context);
         evmc_result result{};
+
         result.status_code = EVMC_FAILURE;
+
+        if( msg->kind == EVMC_CREATE || msg->kind == EVMC_CREATE2 )
+        {
+            // Unimp EVMC_CREATE/EVMC_CREATE2
+            return result; 
+        }
+
+        evmc_execute_fn exec = host->instance->execute;
+        result = exec(host->instance, context, EVMC_MAX_REVISION, msg, host->_opcode.data(), host->_opcode.size());
+        
         return result;
     }
 
@@ -139,7 +158,7 @@ class EVMCContent
         (void)topics_count;
     }
 public:
-    static evmc_context* getNewContents()
+    static evmc_context* getNewContents(evmc_instance* instance)
     {
         static evmc_context* pcontent = nullptr;
         if( pcontent == nullptr )
@@ -163,7 +182,8 @@ public:
             content->host = host;
             pcontent = (evmc_context*)content;
         }
-
+        reinterpret_cast<VirtualEVMCContent*>(pcontent)->clear();
+        reinterpret_cast<VirtualEVMCContent*>(pcontent)->instance = instance;
         return pcontent;
     }
 };
