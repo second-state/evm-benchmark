@@ -57,7 +57,12 @@ void VMInterface::showVMInformation(std::ostream &out)
 evmc_result VMInterface::execute(const std::vector<uint8_t> &opcode, const evmc_message &msg, std::chrono::nanoseconds &runtime)
 {
     evmc_instance* instance =  getNewEVMCInstance();
-    evmc_context *context = EVMCContent::getNewContents();
+    evmc_context *context = EVMCContent::getNewContents(instance);
+
+    auto &base = reinterpret_cast<VirtualEVMCContent*>(context)->accounts[msg.sender];
+    reinterpret_cast<VirtualEVMCContent*>(context)->_opcode = opcode;
+    base.code_size = opcode.size();
+
 
     evmc_execute_fn exec = instance->execute;
 
