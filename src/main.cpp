@@ -3,25 +3,22 @@
 #include <Core/Warper.h>
 #include <Core/Benchmark.h>
 #include <Common/Algorithm.h>
+#include <CLI/CLI.hpp>
 
 #include <iostream>
 #include <vector>
 
-void help()
-{
-    std::cout << "./ejudge TESTCASES_PATH VMFILE" << std::endl;
-}
-
 int main(int argc, char *argv[])
 {
-    if( argc != 3 )
-    {
-        help();
-        return 0;
-    }
+    CLI::App app;
 
-    std::string testcase_base = argv[1];
-    std::string evmc_path = argv[2];
+    std::string testcase_base;
+    app.add_option("TESTCASES_PATH", testcase_base, "Path of testcase folder")->required();
+    
+    std::string evmc_path;
+    app.add_option("VMFILE", evmc_path, "Path of evmc VM file")->required();
+    
+    CLI11_PARSE(app, argc, argv);
 
     Benchmark bm(testcase_base, evmc_path, std::cout, std::cerr);
 
