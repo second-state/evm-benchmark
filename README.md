@@ -137,6 +137,11 @@ EVMC_FAILURE
 
 We will run each testcase 100 times to calculate average runtime. If testcase's result code or output is not expected, the error message will be show like below.
 
+There are two different error message:
+
+1. Result Status Code Miss Match<br>If VM result code is not expected, we will show the difference between VM result code and expected result code.
+2. Output Miss Match!<br>If VM output is not expected, we will show the difference between VM output code and expected output.
+
 ## Todos
 
 ### Build system
