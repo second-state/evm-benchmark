@@ -84,54 +84,30 @@ ejudge will output the information of VM, OS and each testcases. For each testca
 
 Following are the execepted output when you run our testcase:
 ```
-Testcases: 12
-  1). ../../testcase/ERC20/ERC20.json
-        ../../testcase/ERC20/ERC20.bin
-  2). ../../testcase/example_binary/5000000_times_add.json
-        ../../testcase/example_binary/5000000_times_add.bin
-  3). ../../testcase/example_binary/compareOperators.json
-        ../../testcase/example_binary/compareOperators.bin
-  4). ../../testcase/example_binary/HelloWorld.json
-        ../../testcase/example_binary/HelloWorld.bin
-  5). ../../testcase/example_binary/input.json
-        ../../testcase/example_binary/input.bin
-  6). ../../testcase/example_binary/math_binary_OP_with_SHA3_and_gas.json
-        ../../testcase/example_binary/math_binary_OP_with_SHA3_and_gas.bin
-  7). ../../testcase/example_binary/result_code_error.json
-        ../../testcase/example_binary/5000000_times_add.bin
-  8). ../../testcase/example_binary/simple_contract_A.json
-        ../../testcase/example_binary/simple_contract.bin
-  9). ../../testcase/example_binary/simple_contract_B.json
-        ../../testcase/example_binary/simple_contract.bin
-  10). ../../testcase/example_binary/stackMemorySize.json
-        ../../testcase/example_binary/stackMemorySize.bin
-  11). ../../testcase/example_solidity/simple_contract_A.json
-        ../../testcase/example_solidity/simple_contract.sol
-  12). ../../testcase/example_solidity/simple_contract_B.json
-        ../../testcase/example_solidity/simple_contract.sol
 ===================================TESTS=================================
 |ID   | Testcase            | Average Runtime      | Speed              |
 |-----| --------------------| ---------------------| -------------------|
-|1    | ERC20 --evm-version | 0.25319401    ms/per | 240.3216411   MG/s |
-|2    | 5000000 times add   | 48.95083701   ms/per | 2042.865988   MG/s |
-|3    | compare op          | 0.01840801    ms/per | 38.73313845   MG/s |
-|4    | Hello World         | 0.00291901    ms/per | 5.823892347   MG/s |
-|5    | input               | 0.00262101    ms/per | 8.393710821   MG/s |
-|6    | math op & SHA3 hash | Fail! Output Miss Match!                  |
+|1    | ERC20 --evm-version | 0.29378801    ms/per | 207.1153278   MG/s |
+|2    | 1000 times add      | 2.24086801    ms/per | 19.80571805   MG/s |
+|3    | compare op          | 0.01974301    ms/per | 36.11404745   MG/s |
+|4    | wrong output        | Fail! Output Miss Match!                  |
 >>>VM:
-0afa926dd80666aad5c8300ee7e35c50f3ee1d5e930ff36cbc936b6f57abb04d
-0afa926dd80666aad5c8300ee7e35c50f3ee1d5e930ff36cbc9385a7920dd04d
+0000000000000000000000000000000000000000000000000000000000abcdef
+0000000000000000000000000000000000000000000000000000000000007122
 <<<ECPECT
-|7    | wrong expect_code   | Fail! Result Status Code Miss Match!     |
+|5    | wrong expect_code   | Fail! Result Status Code Miss Match!     |
 >>>VM:
-EVMC_OUT_OF_GAS
+EVMC_REVERT
 EVMC_FAILURE
 <<<ECPECT
-|8    | simple contract fun | 0.00762201    ms/per | 26.23979764   MG/s |
-|9    | simple contract fun | 0.00821901    ms/per | 27.37555983   MG/s |
-|10   | stack & memory size | 2.19948901    ms/per | 28.32839797   MG/s |
-|11   | (Sol Builder)simple | 0.00740701    ms/per | 29.431579     MG/s |
-|12   | (Sol Builder)simple | 0.00829701    ms/per | 35.07287565   MG/s |
+|6    | Hello World         | 0.00361801    ms/per | 4.698715592   MG/s |
+|7    | input               | 0.00304901    ms/per | 7.21545682    MG/s |
+|8    | math op & SHA3 hash | 0.01291201    ms/per | 27.41633564   MG/s |
+|9    | simple contract fun | 0.00911001    ms/per | 21.95387272   MG/s |
+|10   | simple contract fun | 0.01043001    ms/per | 21.57236666   MG/s |
+|11   | stack & memory size | 2.44055901    ms/per | 25.53021654   MG/s |
+|12   | (Sol Builder)simple | 0.01014501    ms/per | 21.48839676   MG/s |
+|13   | (Sol Builder)simple | 0.01013501    ms/per | 28.7123545    MG/s |
 =========================================================================
 ```
 

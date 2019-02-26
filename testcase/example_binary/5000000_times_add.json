@@ -1,7 +1,0 @@
-{
-    "name"   : "5000000 times add",
-    "source" : "5000000_times_add.bin",
-    "input"  : "",
-    "expect" : "",
-	"expect_code" : 3
-}
