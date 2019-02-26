@@ -1,6 +1,6 @@
 {
     "name"   : "wrong expect_code",
-    "source" : "5000000_times_add.bin",
+    "source" : "simple_contract.bin",
     "input"  : "",
     "expect" : "",
 	"expect_code" : 1
