@@ -4,7 +4,7 @@ LABEL maintainer="hydai@skymizer.com"
 
 # Install base tool
 RUN apt-get update \
-  && apt-get install -y wget build-essential
+  && apt-get install -y wget git build-essential
 # Install add-apt-repository
 RUN apt-get install -y python-software-properties software-properties-common
 
@@ -20,6 +20,11 @@ RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 1 \
   && update-alternatives --set cc /usr/bin/gcc \
   && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30 \
   && update-alternatives --set c++ /usr/bin/g++
+
+# Install Solc
+RUN add-apt-repository ppa:ethereum/ethereum \
+  && apt-get update \
+  && apt-get install solc
 
 # Cleanup
 RUN apt-get autoremove --purge -y \

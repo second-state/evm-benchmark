@@ -2,9 +2,6 @@ FROM hydai/workenv:latest
 
 LABEL maintainer="hydai@skymizer.com"
 
-# Remove cmake
-RUN apt-get remove --purge --auto-remove cmake
-
 # Install cmake 3.13.4
 WORKDIR /tmp
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4.tar.gz \

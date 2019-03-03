@@ -15,6 +15,16 @@ C++ 17 Support Compiler
 * g++ >= 8.1
 * cmake >= 3.8
 
+## Get pre-built docker image
+
+```bash
+docker pull hydai/ejudge-dev
+docker run --name ejudge -it hydai/ejudge-dev
+
+$ # In /workdir, run demo directly
+$ ./build/src/ejudge ./testcase ./lib/libaleth-interpreter.so
+```
+
 ## How to build
 
 ```bash
