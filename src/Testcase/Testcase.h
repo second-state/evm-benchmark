@@ -8,6 +8,7 @@ struct Testcase
 {
     std::string name;
     std::string source_path;
+    std::string contract_name;
     std::string json_path;
 
     evmc_status_code expect_code;

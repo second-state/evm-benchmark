@@ -57,6 +57,7 @@ Following are the objects we requested:
 * `expect`(string): Expected output of the testcase.
 
 There is an extra object:
+* `contract_name`(string): Name of the contract of solidity file. Note that If you want to build source file by solidity builder, you must add this object.
 * `expect_code`(int): Expected code of the testcase. Note that if the object isn't added to json, it will be preset to `0`. The legal expected codes can be find in the `enum evmc_status_code` at `Third/EVMC/include/evmc/emvc.h`.
 
 You can see example json file with `expect_code` at `testcase/example_binary/5000000_times_add.json`.

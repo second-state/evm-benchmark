@@ -1,5 +1,6 @@
 {
     "name"   : "(Sol Builder)simple contract function B",
+    "contract_name" : "HelloWorld",
     "source" : "simple_contract.sol",
     "input"  : "7323febe0000007122fffffffffffffffffffffffffffffffffffffffffffffffffabcde",
     "expect" : "000000e245fffffffffffffffffffffffffffffffffffffffffffffffff579bc"

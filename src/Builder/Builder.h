@@ -27,7 +27,7 @@ protected:
 #endif
     }
 
-    bool callScript(std::string data)
+    bool callScript(fs::path source_path, std::string contract_name)
     {
         fs::path oldCurrentPath(fs::current_path());
         fs::path workPath("./temp");
@@ -41,28 +41,20 @@ protected:
             return false;
 
         bool result = false;
-        std::string tmpInputFilename  = "a.tmp";
-        std::string tmpOutputFilename = "a.bin";
+        std::string OutputFilename =  contract_name + ".bin-runtime";
         do{
             fs::current_path(workPath);
-            std::ofstream fout(tmpInputFilename);
-            if( !fout.is_open() )
-                break;
-
-            fout << data ;
-            fout.close();
 
             //TODO: Rewrite this!
-            std::string executeCommand = scriptPath + " " + tmpInputFilename + " " + tmpOutputFilename;
+            std::string executeCommand = scriptPath + " \"" + source_path.string() + "\"";
             [[maybe_unused]] int sys = system(executeCommand.c_str());
 
-            if( testScriptRunSuccess(tmpOutputFilename) )
+            if( testScriptRunSuccess(OutputFilename) )
                 result = true;
         }while(false);
 
-        fs::remove(tmpInputFilename);
-        fs::remove(tmpOutputFilename);
         fs::current_path(oldCurrentPath);
+        fs::remove_all(workPath);
         return result;
     }
 protected:
@@ -80,7 +72,7 @@ protected:
 public:
     virtual std::string getClassName() = 0;
 	virtual std::string getMakefileName() { assert(false); return ""; };
-    virtual bool build(std::string source_path) = 0;
+    virtual bool build(fs::path source_path, std::string contract_name) = 0;
     virtual std::vector<std::string> acceptExtensions() = 0;
     virtual std::string getBinary(){ return m_binary; }
     Builder(){};
@@ -99,9 +91,9 @@ public:
         return {".bin"};
     }
 
-    virtual bool build(std::string data) override
+    virtual bool build(fs::path source_path, std::string contract_name) override
     {
-        m_binary = data;
+        m_binary = GetFileContent(source_path.string());
         return true;
     }
 };
@@ -119,10 +111,10 @@ public:
         return {".lity"};
     }
 
-    virtual bool build(std::string data) override
+    virtual bool build(fs::path source_path, std::string contract_name) override
     {
         m_binary = "";
-        if( !callScript(data) )
+        if( !callScript(source_path, contract_name) )
         {
             return false;
         }
@@ -143,10 +135,10 @@ public:
         return {".sol"};
     }
 
-    virtual bool build(std::string data) override
+    virtual bool build(fs::path source_path, std::string contract_name) override
     {
         m_binary = "";
-        if( !callScript(data) )
+        if( !callScript(source_path, contract_name) )
         {
             return false;
         }

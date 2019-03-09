@@ -54,7 +54,6 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
             nlohmann::json json;
             Testcase test;
 
-            //TODO: Handle Exception 
             json = nlohmann::json::parse(json_str.begin(), json_str.end());
 
             test.name        = json["name"];
@@ -63,6 +62,11 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
             test.input       = hex2Uint8Vec(json["input"]);
             test.expect      = hex2Uint8Vec(json["expect"]);
             test.binary      = {};
+
+            if( json.count("contract_name") )
+            {
+                test.contract_name = json["contract_name"];
+            }
 
             if( json.count("expect_code") )
             {
@@ -95,14 +99,13 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
                 return ;
             }
 
-            std::string contents = GetFileContent(test.source_path);
             std::string sext = source_path.extension().string();
             bool isbuilt = false;
             for(Builder *ptr:m_builder)
             {
                 if( contain( ptr->acceptExtensions(), sext ) )
                 {
-                    if( ptr->build(contents) )
+                    if( ptr->build(fs::current_path()/source_path, test.contract_name) )
                     {
                         test.binary = hex2Uint8Vec(ptr->getBinary());
                         isbuilt = true;
