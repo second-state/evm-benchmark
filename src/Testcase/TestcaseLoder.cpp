@@ -77,13 +77,12 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
                 test.expect_code = EVMC_SUCCESS;
             }
             
-
             fs::path source_path = test.source_path;
-            if( source_path.is_relative() )
-            {
-                source_path = fs::path(file).remove_filename() / source_path;
-                test.source_path = source_path.string();
+            if(source_path.is_relative()){
+                source_path = fs::proximate(file.remove_filename()) /source_path;
             }
+            source_path = fs::absolute(source_path);
+            test.source_path = source_path.string();
 
             if( !fs::is_regular_file(test.source_path) )
             {
@@ -105,7 +104,7 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
             {
                 if( contain( ptr->acceptExtensions(), sext ) )
                 {
-                    if( ptr->build(fs::current_path()/source_path, test.contract_name) )
+                    if( ptr->build(source_path, test.contract_name) )
                     {
                         test.binary = hex2Uint8Vec(ptr->getBinary());
                         isbuilt = true;
