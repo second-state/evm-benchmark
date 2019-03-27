@@ -1,0 +1,7 @@
+{
+    "name"   : "(Sol Builder)event",
+    "contract_name" : "HelloWorld",
+    "source" : "simple_event.sol",
+    "input"  : "ff886948",
+    "expect" : ""
+}
