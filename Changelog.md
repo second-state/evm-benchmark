@@ -1,3 +1,10 @@
+### ejudge 1.?.0 (2019-03-28)
+
+Test Features:
+ * Support OPCODE `log?`
+ * Support event at `solidity`
+ * allow more complex solidity compiler method
+
 ### ejudge 1.0.0 (2019-01-25)
 
 Test Features:
