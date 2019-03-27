@@ -4,6 +4,8 @@
 #include <evmc/helpers.hpp>
 #include <evmc/loader.h>
 #include <map>
+#include <iostream>
+#include <vector>
 
 struct VirtualEVMCContent : evmc_context
 {
@@ -19,12 +21,25 @@ struct VirtualEVMCContent : evmc_context
     std::map<evmc_address, account> accounts;
     evmc_instance* instance;
 
+    struct vmlog
+    {
+        evmc_address addr;
+        std::vector<uint8_t> data;
+        std::vector<evmc_bytes32> topics;
+    };
+    std::vector<vmlog> log;
+
     std::vector<uint8_t> _opcode; //TODO: Remove this
 
     void clear()
     {
         accounts.clear();
         instance = nullptr;
+    }
+
+    void exportStateDetail()
+    {
+        //TODO
     }
 };
 
@@ -103,6 +118,18 @@ class EVMCContent
         (void)address;
         (void)beneficiary;
     }
+// https://github.com/ethereum/aleth/blob/master/libethereum/ExtVM.cpp#L154
+// https://github.com/ethereum/aleth/blob/master/libevm/ExtVMFace.cpp#L186
+// https://github.com/ethereum/aleth/blob/master/libethereum/Executive.cpp#L357
+    static evmc_result create(evmc_context* context, const evmc_message* msg)
+    {
+        // Unimp EVMC_CREATE/EVMC_CREATE2
+        evmc_result result{};
+
+        result.status_code = EVMC_FAILURE;
+
+        return result;
+    }
 
     static evmc_result call(evmc_context* context, const evmc_message* msg)
     {
@@ -113,8 +140,7 @@ class EVMCContent
 
         if( msg->kind == EVMC_CREATE || msg->kind == EVMC_CREATE2 )
         {
-            // Unimp EVMC_CREATE/EVMC_CREATE2
-            return result; 
+            return create(context, msg); 
         }
 
         evmc_execute_fn exec = host->instance->execute;
@@ -143,19 +169,16 @@ class EVMCContent
         return example_block_hash;
     }
 
-    static void emit_log(evmc_context* context,
-                     const evmc_address* address,
-                     const uint8_t* data,
-                     size_t data_size,
-                     const evmc_bytes32 topics[],
-                     size_t topics_count)
+    static void emit_log(evmc_context* context, const evmc_address* address, const uint8_t* data, size_t data_size, const evmc_bytes32 topics[], size_t topics_count)
     {
-        (void)context;
-        (void)address;
-        (void)data;
-        (void)data_size;
-        (void)topics;
-        (void)topics_count;
+        VirtualEVMCContent* host = reinterpret_cast<VirtualEVMCContent*>(context);
+
+        VirtualEVMCContent::vmlog temp;
+        temp.addr = *address;
+        temp.data.assign(data, data+data_size);
+        temp.topics.assign(topics, topics+topics_count);
+
+        host->log.emplace_back(std::move(temp));
     }
 public:
     static evmc_context* getNewContents(evmc_instance* instance)
