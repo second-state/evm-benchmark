@@ -22,7 +22,7 @@ std::vector<uint8_t> hex2Uint8Vec(const std::string &hexs)
 
     std::size_t len = hexs.size();
 
-    for(int i = 0 ; i < len; i += 2)
+    for(std::size_t i = 0 ; i < len; i += 2)
     {
         assert( std::isxdigit(hexs[i]) && std::isxdigit(hexs[i+1]) );
         res.emplace_back( hex2Uint(hexs[i])*16 + hex2Uint(hexs[i+1]) );
