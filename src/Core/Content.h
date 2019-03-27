@@ -34,6 +34,7 @@ struct VirtualEVMCContent : evmc_context
     void clear()
     {
         accounts.clear();
+        log.clear();
         instance = nullptr;
     }
 

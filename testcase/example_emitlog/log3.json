@@ -1,0 +1,7 @@
+{
+    "name"   : "(Sol Builder)log3",
+    "contract_name" : "HelloWorld",
+    "source" : "simple_log.sol",
+    "input"  : "24aa0de8",
+    "expect" : ""
+}
