@@ -1,5 +1,6 @@
 #include <Core/Benchmark.h>
 
+#include <Common/Algorithm.h>
 #include <Builder/Builder.h>
 #include <Testcase/TestcaseLoder.h>
 #include <evmc/evmc.h>
@@ -151,10 +152,11 @@ bool Benchmark::runTests()
         msg.depth = 0;
 
         evmc_result result;
+        evmc_context *context;
         for(int i=0 ; i < testtimes ; ++i)
         {
             std::chrono::nanoseconds temp;
-            result = m_vm.execute(test.binary, msg, temp);
+            result = m_vm.execute(test.binary, msg, temp, context);
             runtime += temp;
 
             if( result.status_code != test.expect_code )
@@ -180,6 +182,12 @@ bool Benchmark::runTests()
                 break;
             }
 
+            auto log = reinterpret_cast<VirtualEVMCContent*>(context)->log;
+            if(!(log==test.log))
+            {
+                accept = false;
+                break;
+            }
             
         }
         
@@ -199,7 +207,7 @@ bool Benchmark::runTests()
             dout() << evmc_status_code_map.at(test.expect_code) << "\n<<<ECPECT";
             dout() << std::setfill(' ');
         }
-        else
+        else if( memcmp(result.output_data, test.expect.data(), test.expect.size()) != 0 )
         {
             dout() << std::setw(42)<< "Fail! Output Miss Match! " << "|\n";
 
@@ -214,7 +222,41 @@ bool Benchmark::runTests()
             dout() << std::setfill(' ');
             all_accept = false;
         }
-        
+        else
+        {
+            dout() << std::setw(42)<< "Fail! Log Miss Match! " << "|\n";
+
+            dout() << ">>>VM:\n";
+            auto log = reinterpret_cast<VirtualEVMCContent*>(context)->log;
+            for(auto l:log){
+                dout() << "{\n";
+                dout() << "   addr: " << uint8Arr2hexString(l.addr.bytes,20) << '\n';
+                dout() << "   topics:\n";
+                for(auto t:l.topics)
+                {
+                    dout() << "       " << uint8Arr2hexString(t.bytes,32) << '\n';
+                }
+                dout() << "   data: " << uint8Arr2hexString(l.data.data(),l.data.size()) << '\n';
+                dout() << "}\n";
+            }
+            dout() << "------------------------------------------------------------------------------\n";
+            for(auto l:test.log){
+                dout() << "{\n";
+                dout() << "   addr: "<<uint8Arr2hexString(l.addr.bytes,20) << '\n';
+                dout() << "   topics:\n";
+                for(auto t:l.topics)
+                {
+                    dout() << "       " << uint8Arr2hexString(t.bytes,32) << '\n';
+                }
+                dout() << "   data: " << uint8Arr2hexString(l.data.data(),l.data.size()) << '\n';
+                dout() << "}\n";
+            }
+            dout() << "<<<ECPECT";
+
+            dout() << std::setfill(' ');
+            all_accept = false;            
+        }
+
         if( result.release )
             result.release(&result);
         dout() << "\n";

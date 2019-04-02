@@ -31,5 +31,5 @@ public:
         free((uint8_t*)result->output_data);
     }
 
-    evmc_result execute(const std::vector<uint8_t> &opcode, const evmc_message &msg, std::chrono::nanoseconds &runtime);
+    evmc_result execute(const std::vector<uint8_t> &opcode, const evmc_message &msg, std::chrono::nanoseconds &runtime, evmc_context *&context);
 };

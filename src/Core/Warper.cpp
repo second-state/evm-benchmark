@@ -54,10 +54,10 @@ void VMInterface::showVMInformation(std::ostream &out)
     out << "Version: " << instance->version << std::endl;
 }
 
-evmc_result VMInterface::execute(const std::vector<uint8_t> &opcode, const evmc_message &msg, std::chrono::nanoseconds &runtime)
+evmc_result VMInterface::execute(const std::vector<uint8_t> &opcode, const evmc_message &msg, std::chrono::nanoseconds &runtime, evmc_context *&context)
 {
     evmc_instance* instance =  getNewEVMCInstance();
-    evmc_context *context = EVMCContent::getNewContents(instance);
+    context = EVMCContent::getNewContents(instance);
 
     auto &base = reinterpret_cast<VirtualEVMCContent*>(context)->accounts[msg.sender];
     reinterpret_cast<VirtualEVMCContent*>(context)->_opcode = opcode;

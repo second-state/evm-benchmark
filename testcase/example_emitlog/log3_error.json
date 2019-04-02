@@ -1,5 +1,5 @@
 {
-    "name"   : "(Sol Builder)log3",
+    "name"   : "(Sol Builder)log3 error",
     "contract_name" : "HelloWorld",
     "source" : "simple_log.sol",
     "input"  : "24aa0de8",
@@ -10,7 +10,7 @@
             "topics" : [
                 "1212121212121212121212112121321321231121212121212121212121212212",
                 "50cb9fe53daa9737b786ab3646f04d0150dc50ef4e75f59509d83667ad5adb20",
-                "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabca"
+                "7122712271227122712271227122712271227122712271227122712271227122"
             ],
             "data" : "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         }

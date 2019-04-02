@@ -3,5 +3,14 @@
     "contract_name" : "HelloWorld",
     "source" : "simple_event.sol",
     "input"  : "ff886948",
-    "expect" : ""
+    "expect" : "",
+    "expect_log" : [
+        {
+            "addr" : "000000000000000000000000004a696e6b656c61",
+            "topics" : [
+                "f0fdf83467af68171df09204c0b00056c1e4c80e368b3fff732778b858f7966d"
+            ],
+            "data" : "0000000000000000000000000000000000000000000000000000000000001bd2"
+        }
+    ]
 }

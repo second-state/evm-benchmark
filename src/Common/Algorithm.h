@@ -11,3 +11,5 @@ template<typename T, typename U> bool contain(T &&container, U &&val)
 }
 
 std::vector<uint8_t> hex2Uint8Vec(const std::string &hexs);
+
+std::string uint8Arr2hexString(const uint8_t *arr, size_t n);

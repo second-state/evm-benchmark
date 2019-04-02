@@ -30,3 +30,18 @@ std::vector<uint8_t> hex2Uint8Vec(const std::string &hexs)
 
     return res;
 }
+
+std::string uint8Arr2hexString(const uint8_t *arr, size_t n)
+{
+    std::string res;
+    for(size_t i=0; i<n; ++i)
+    {
+        uint8_t tmp[2] = {uint8_t(arr[i]/16), uint8_t(arr[i]%16)};
+        for(auto u:tmp)
+        {
+            char c = u<10 ? u+'0' : u-10+'a';
+            res += c;
+        }
+    }
+    return res;
+}

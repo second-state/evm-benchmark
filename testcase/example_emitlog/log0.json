@@ -3,5 +3,12 @@
     "contract_name" : "HelloWorld",
     "source" : "simple_log.sol",
     "input"  : "4e2bf148",
-    "expect" : ""
+    "expect" : "",
+    "expect_log" : [
+        {
+            "addr" : "000000000000000000000000004a696e6b656c61",
+            "topics" : [],
+            "data" : "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+        }
+    ]
 }
