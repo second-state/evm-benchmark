@@ -4,6 +4,7 @@
 #include <Core/Benchmark.h>
 #include <Common/Algorithm.h>
 #include <CLI/CLI.hpp>
+#include <Log/Color.h>
 
 #include <iostream>
 #include <vector>

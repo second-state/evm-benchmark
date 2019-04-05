@@ -2,6 +2,7 @@
 
 #include <Common/Algorithm.h>
 #include <Builder/Builder.h>
+#include <Log/Color.h>
 #include <Testcase/TestcaseLoder.h>
 #include <evmc/evmc.h>
 
@@ -201,7 +202,7 @@ bool Benchmark::runTests()
         }
         else if( result.status_code != test.expect_code )
         {
-            dout() << std::setw(41)<< "Fail! Result Status Code Miss Match!" << "|\n";
+            Log::Error(dout()) << std::setw(41)<< "Fail! Result Status Code Miss Match!" << "|\n";
             dout() << ">>>VM:\n";
             dout() << evmc_status_code_map.at(result.status_code) << "\n";
             dout() << evmc_status_code_map.at(test.expect_code) << "\n<<<ECPECT";
@@ -209,7 +210,7 @@ bool Benchmark::runTests()
         }
         else if( memcmp(result.output_data, test.expect.data(), test.expect.size()) != 0 )
         {
-            dout() << std::setw(42)<< "Fail! Output Miss Match! " << "|\n";
+            Log::Error(dout()) << std::setw(42)<< "Fail! Output Miss Match! " << "|\n";
 
             dout() << ">>>VM:\n";
             for(int i=0;i<result.output_size;++i)
@@ -224,7 +225,7 @@ bool Benchmark::runTests()
         }
         else
         {
-            dout() << std::setw(42)<< "Fail! Log Miss Match! " << "|\n";
+            Log::Error(dout()) << std::setw(42)<< "Fail! Log Miss Match! " << "|\n";
 
             dout() << ">>>VM:\n";
             auto log = reinterpret_cast<VirtualEVMCContent*>(context)->log;
