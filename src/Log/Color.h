@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Common/Noncopyable.h>
 #include <cassert>
 #include <ostream>
 
@@ -9,8 +8,10 @@ namespace Log
 {
     enum class Level
     {
+        Critical,
         Error,
-        Warning
+        Warning,
+        Info
     };
 
     template<Level level>
@@ -22,11 +23,17 @@ namespace Log
         {
             switch(level)
             {
+                case Level::Critical:
+                    m_out<< ESC "[1;35m";
+                    break;
                 case Level::Error:
                     m_out<< ESC "[1;31m";
                     break;
                 case Level::Warning:
                     m_out<< ESC "[1;33m";
+                    break;
+                case Level::Info:
+                    m_out<< ESC "[1;37m";
                     break;
                 default:
                     assert(false);
@@ -45,7 +52,9 @@ namespace Log
         }
     };
 
-    using Error = ColorfulStream<Level::Error>;
+    using Critical = ColorfulStream<Level::Critical>;
+    using Error   = ColorfulStream<Level::Error>;
     using Warning = ColorfulStream<Level::Warning>;
+    using Info = ColorfulStream<Level::Info>;
 }
 #undef ESC

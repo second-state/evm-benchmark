@@ -11,6 +11,7 @@
 #include <Common/Algorithm.h>
 #include <Common/FileUtils.h>
 #include <Filesystem/FileIterator.h>
+#include <Log/Color.h>
 #include <Testcase/Testcase.h>
 #include <Builder/Builder.h>
 #include <evmc/evmc.h>
@@ -127,26 +128,27 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
                     if( ptr->build(source_path, test.contract_name) )
                     {
                         test.binary = hex2Uint8Vec(ptr->getBinary());
-                        isbuilt = true;
+                        test.state = TestcaseState::Ready;
                     }
                     else
                     {
+                        test.state = TestcaseState::CompileFail;
                         derr << file << " Ignored!" << std::endl;
                         derr<<"    Build "<< full_name <<" with " << ptr->getClassName() << " FAIL!" <<std::endl;
                     }
+                    isbuilt = true;
                     break;
                 }
             }
 
-            if( isbuilt )
+            if( !isbuilt )
             {
-                m_testcases.emplace_back(test);
-            }
-            else
-            {
+                test.state = TestcaseState::NoMatchedBuilder;
+
                 derr << file << " Ignored!" << std::endl;
                 derr<<"    No Builder for "<< full_name << std::endl;
             }
+            m_testcases.emplace_back(test);
         }
     });
     return true;

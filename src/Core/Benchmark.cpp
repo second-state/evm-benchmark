@@ -106,6 +106,21 @@ bool Benchmark::genEnvInfo()
     return true;
 }
 
+// Format
+// Width = char[75] + '\n'
+//  12345 123456789012345678901 1234567890123456789012 12345678901234567890
+// |5    |21                   |22                    |20                  |
+//
+
+// TODO: remove this
+static std::map<TestcaseState, std::string> TestcaseStateString = {
+    {TestcaseState::Ready,              "Ready"},
+    {TestcaseState::CompileFail,        "Compile Fail"},
+    {TestcaseState::NoMatchedBuilder,   "No Matched Builder"},
+    {TestcaseState::UnknownError,       "Unknown Error"}
+};
+
+
 bool Benchmark::runTests()
 {
     int counter = 0;
@@ -136,6 +151,13 @@ bool Benchmark::runTests()
         dout() << "|";
         dout() << std::left << std::setw(5) << std::dec << ++counter << "| " ;
         dout() << std::setw(20) << std::left << test.name.substr(0,19) << "| ";
+
+        if( test.state != TestcaseState::Ready )
+        {
+            Log::Critical(dout()) << std::setw(22+20) << TestcaseStateString[test.state];
+            dout()<<"|\n";
+            continue;
+        }
         
         bool accept = true;
         std::chrono::nanoseconds runtime {0};
@@ -202,19 +224,27 @@ bool Benchmark::runTests()
         }
         else if( result.status_code != test.expect_code )
         {
-            Log::Error(dout()) << std::setw(41)<< "Fail! Result Status Code Miss Match!" << "|\n";
-            dout() << ">>>VM:\n";
+            Log::Error(dout()) << std::setw(42) << "Fail! Result Status Code Miss Match!";
+            dout()<< "|\n";
+            dout() << ">>>>VM Result:\n";
             dout() << evmc_status_code_map.at(result.status_code) << "\n";
             dout() << evmc_status_code_map.at(test.expect_code) << "\n<<<ECPECT";
             dout() << std::setfill(' ');
         }
         else if( memcmp(result.output_data, test.expect.data(), test.expect.size()) != 0 )
         {
-            Log::Error(dout()) << std::setw(42)<< "Fail! Output Miss Match! " << "|\n";
+            Log::Error(dout()) << std::setw(42)<< "Fail! Output Miss Match!" ;
+            dout()<< "|\n";
 
-            dout() << ">>>VM:\n";
-            for(int i=0;i<result.output_size;++i)
-                dout() << std::hex << std::setw(2) << std::setfill('0') << std::right << (unsigned)result.output_data[i]; 
+            dout() << ">>>VM Result:\n";
+            for(size_t i=0;i<result.output_size;++i)
+            {
+                dout() << std::hex << std::setfill('0') << std::right;
+                if( i < test.expect.size() && result.output_data[i] != test.expect[i] )
+                    Log::Warning(dout()) << std::setw(2)  << (unsigned)result.output_data[i]; 
+                else
+                    dout() << std::setw(2)  << (unsigned)result.output_data[i]; 
+            }
             dout()<<"\n";
             for(unsigned d:test.expect)
                 dout() << std::hex << std::setw(2) << std::setfill('0') << std::right << d; 
@@ -227,7 +257,7 @@ bool Benchmark::runTests()
         {
             Log::Error(dout()) << std::setw(42)<< "Fail! Log Miss Match! " << "|\n";
 
-            dout() << ">>>VM:\n";
+            dout() << ">>>>VM Result:\n";
             auto log = reinterpret_cast<VirtualEVMCContent*>(context)->log;
             for(auto l:log){
                 dout() << "{\n";

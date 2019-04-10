@@ -6,8 +6,18 @@
 
 #include <Core/Content.h>
 
+enum class TestcaseState
+{
+    Ready,
+    CompileFail,
+    NoMatchedBuilder,
+    UnknownError
+};
+
 struct Testcase
 {
+    TestcaseState state = TestcaseState::UnknownError;
+
     std::string name;
     std::string source_path;
     std::string contract_name;
