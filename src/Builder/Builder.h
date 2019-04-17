@@ -45,7 +45,6 @@ protected:
         do{
             fs::current_path(workPath);
 
-            //TODO: Rewrite this!
             std::string executeCommand = scriptPath + " \"" + source_path.string() + "\"";
             [[maybe_unused]] int sys = system(executeCommand.c_str());
 

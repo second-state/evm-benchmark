@@ -26,13 +26,18 @@ struct VirtualEVMCContent : evmc_context
         evmc_address addr;
         std::vector<evmc_bytes32> topics;
         std::vector<uint8_t> data;
-        bool operator==(const vmlog &b)const{
-            if(memcmp(addr.bytes,b.addr.bytes,sizeof(addr.bytes))) return false;
-            if(data!=b.data) return false;
-            if(topics.size()!=b.topics.size()) return false;
+        bool operator==(const vmlog &b) const
+        {
+            if( memcmp(addr.bytes, b.addr.bytes, sizeof(addr.bytes)) )
+                return false;
+            if( data!=b.data )
+                return false;
+            if( topics.size()!=b.topics.size() )
+                return false;
             for(size_t i=0; i<topics.size(); ++i)
             {
-                if(memcmp(topics[i].bytes,b.topics[i].bytes,sizeof(topics[i].bytes))) return false;
+                if( memcmp(topics[i].bytes, b.topics[i].bytes, sizeof(topics[i].bytes)) )
+                    return false;
             }
             return true;
         }
