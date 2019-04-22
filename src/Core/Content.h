@@ -161,7 +161,7 @@ class EVMCContent
 
         evmc_execute_fn exec = host->instance->execute;
         result = exec(host->instance, context, EVMC_MAX_REVISION, msg, host->_opcode.data(), host->_opcode.size());
-        
+
         return result;
     }
 

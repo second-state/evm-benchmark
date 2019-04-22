@@ -84,9 +84,9 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
                 {
                     test.log.emplace_back();
 
-                    assert( lg.count("addr") );
-                    assert( lg.count("topics") );
-                    assert( lg.count("data") );
+                    assert(lg.count("addr"));
+                    assert(lg.count("topics"));
+                    assert(lg.count("data"));
 
                     memcpy(test.log.back().addr.bytes, hex2Uint8Vec(lg["addr"]).data(), sizeof(test.log.back().addr.bytes));
                     for(const auto &t:lg["topics"])
