@@ -4,15 +4,5 @@
     "source" : "simple_log.sol",
     "input"  : "24aa0de8",
     "expect" : "",
-    "expect_log" : [
-        {
-            "addr" : "000000000000000000000000004a696e6b656c61",
-            "topics" : [
-                "1212121212121212121212112121321321231121212121212121212121212212",
-                "50cb9fe53daa9737b786ab3646f04d0150dc50ef4e75f59509d83667ad5adb20",
-                "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabca"
-            ],
-            "data" : "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-        }
-    ]
+    "expect_log" : "3d1ca41aedfa1a49a75bea323d2fc87227c87c166c4ef9bb9c7a14c1f3138dc4"
 }

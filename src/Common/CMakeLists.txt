@@ -3,5 +3,7 @@ add_library(Common STATIC
     Algorithm.h
     FileUtils.cpp
     FileUtils.h
+    keccak-tiny.cpp
+    keccak-tiny.h
 )
 set_target_properties(Common PROPERTIES LINKER_LANGUAGE CXX)

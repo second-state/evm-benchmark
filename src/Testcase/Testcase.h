@@ -28,5 +28,5 @@ struct Testcase
     std::vector<uint8_t> input;
     std::vector<uint8_t> expect;
     std::vector<uint8_t> binary;
-    std::vector<VirtualEVMCContent::vmlog> log;
+    std::vector<uint8_t> log;
 };

@@ -3,5 +3,6 @@
     "contract_name" : "HelloWorld",
     "source" : "simple_contract.sol",
     "input"  : "7323febe0000007122fffffffffffffffffffffffffffffffffffffffffffffffffabcde",
-    "expect" : "000000e245fffffffffffffffffffffffffffffffffffffffffffffffff579bc"
+    "expect" : "000000e245fffffffffffffffffffffffffffffffffffffffffffffffff579bc",
+    "expect_log" : "1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347"
 }

@@ -2,5 +2,6 @@
     "name"   : "stack & memory size",
     "source" : "stackMemorySize.bin",
     "input"  : "",
-    "expect" : "0000000000000000000000000000000000000000000000000000000000007fc0"
+    "expect" : "0000000000000000000000000000000000000000000000000000000000007fc0",
+    "expect_log" : "1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347"
 }

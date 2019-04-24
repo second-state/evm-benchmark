@@ -2,5 +2,6 @@
     "name"   : "math op & SHA3 hash",
     "source" : "math_binary_OP_with_SHA3.bin",
     "input"  : "",
-    "expect" : "0afa926dd80666aad5c8300ee7e35c50f3ee1d5e930ff36cbc936b2b8adec0ed"
+    "expect" : "0afa926dd80666aad5c8300ee7e35c50f3ee1d5e930ff36cbc936b2b8adec0ed",
+    "expect_log" : "1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347"
 }

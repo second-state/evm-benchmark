@@ -3,5 +3,6 @@
     "source" : "simple_contract.bin",
     "input"  : "",
     "expect" : "",
-	"expect_code" : 1
+	"expect_code" : 1,
+    "expect_log" : ""
 }

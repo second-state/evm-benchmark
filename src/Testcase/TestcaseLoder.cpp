@@ -62,6 +62,7 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
             test.json_path   = full_name;
             test.input       = hex2Uint8Vec(json["input"]);
             test.expect      = hex2Uint8Vec(json["expect"]);
+            test.log         = hex2Uint8Vec(json["expect_log"]);
             test.binary      = {};
 
             if( json.count("contract_name") )
@@ -76,26 +77,6 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
             else
             {
                 test.expect_code = EVMC_SUCCESS;
-            }
-
-            if( json.count("expect_log") )
-            {
-                for(const auto &lg:json["expect_log"])
-                {
-                    test.log.emplace_back();
-
-                    assert(lg.count("addr"));
-                    assert(lg.count("topics"));
-                    assert(lg.count("data"));
-
-                    memcpy(test.log.back().addr.bytes, hex2Uint8Vec(lg["addr"]).data(), sizeof(test.log.back().addr.bytes));
-                    for(const auto &t:lg["topics"])
-                    {
-                        test.log.back().topics.emplace_back();
-                        memcpy(test.log.back().topics.back().bytes, hex2Uint8Vec(t).data(), sizeof(test.log.back().topics.back().bytes));
-                    }
-                    test.log.back().data = hex2Uint8Vec(lg["data"]);
-                }
             }
             
             fs::path source_path = test.source_path;
