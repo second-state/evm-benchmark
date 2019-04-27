@@ -119,36 +119,60 @@ static std::map<TestcaseState, std::string> TestcaseStateString = {
     {TestcaseState::Ready, "Ready"},
     {TestcaseState::CompileFail, "Compile Fail"},
     {TestcaseState::NoMatchedBuilder, "No Matched Builder"},
-    {TestcaseState::UnknownError, "Unknown Error"}};
+    {TestcaseState::UnknownError, "Unknown Error"}
+};
+
+
+enum class STRID
+{
+    MSPER,
+    MGS,
+    RESULT_MISSMATCH,
+    OUTPUT_MISSMATCH,
+    LOG_MISSMATCH
+};
+
+static std::map<STRID, std::string> LANG = {
+    {STRID::MSPER,  " ms/pre "},
+    {STRID::MGS,    " MG/s "},
+    {STRID::RESULT_MISSMATCH, "Fail! Result Status Code Miss Match!"},
+    {STRID::OUTPUT_MISSMATCH, "Fail! Output Miss Match!"},
+    {STRID::LOG_MISSMATCH, "Fail! Log Miss Match!"}
+};
 
 bool Benchmark::runTests()
 {
+    const int EDGE_W = 2;
+    const int COL1_W = 4;
+    const int COL2_W = 20;
+    const int COL3_W = 20;
+    const int COL4_W = 20;
     int counter = 0;
     int testtimes = 100;
     bool all_accept = true;
 
     dout() << std::setprecision(10);
     dout() << "===================================TESTS=================================\n";
-    dout() << "|";
-    dout() << std::setw(5) << std::left << "ID"
+    dout() << "| ";
+    dout() << std::setw(COL1_W) << std::left << "ID"
            << "| ";
-    dout() << std::setw(20) << std::left << "Testcase"
+    dout() << std::setw(COL2_W) << std::left << "Testcase"
            << "| ";
-    dout() << std::setw(10 + 11) << std::left << "Average Runtime"
+    dout() << std::setw(COL3_W) << std::left << "Average Runtime"
            << "| ";
-    dout() << std::setw(10 + 9) << std::left << "Speed"
+    dout() << std::setw(COL4_W) << std::left << "Speed"
            << "| ";
     dout() << std::endl;
 
     dout() << std::setfill('-');
-    dout() << "|";
-    dout() << std::setw(5) << ""
+    dout() << "| ";
+    dout() << std::setw(COL1_W) << ""
            << "| ";
-    dout() << std::setw(20) << ""
+    dout() << std::setw(COL2_W) << ""
            << "| ";
-    dout() << std::setw(10 + 11) << ""
+    dout() << std::setw(COL3_W) << ""
            << "| ";
-    dout() << std::setw(10 + 9) << ""
+    dout() << std::setw(COL4_W) << ""
            << "| ";
     dout() << std::endl;
 
@@ -156,13 +180,13 @@ bool Benchmark::runTests()
     for (auto const &test : m_casesloder.testcases())
     {
         //Print title
-        dout() << "|";
-        dout() << std::left << std::setw(5) << std::dec << ++counter << "| ";
-        dout() << std::setw(20) << std::left << test.name.substr(0, 19) << "| ";
+        dout() << "| ";
+        dout() << std::left << std::setw(COL1_W) << std::dec << ++counter << "| ";
+        dout() << std::left << std::setw(COL2_W) << test.name.substr(0, COL2_W - 1) << "| ";
 
         if (test.state != TestcaseState::Ready)
         {
-            Log::Critical(dout()) << std::setw(22 + 20) << TestcaseStateString[test.state];
+            Log::Critical(dout()) << std::setw(COL3_W + EDGE_W + COL4_W) << TestcaseStateString[test.state];
             dout() << "|\n";
             continue;
         }
@@ -227,21 +251,21 @@ bool Benchmark::runTests()
             auto gas_used = msg.gas - result.gas_left;
             double runtime_once_ms = 1.0 * (runtime.count() + 1) / testtimes / 1E9 * 1000;
             double gas_speed = 1.0 * gas_used / 1E6 / (1.0 * (runtime.count() + 1) / testtimes / 1E9);
-            dout() << std::setw(13) << runtime_once_ms << " ms/per | ";
-            dout() << std::setw(13) << gas_speed << " MG/s | ";
+            dout() << std::setw(COL3_W - LANG[STRID::MSPER].size()) << runtime_once_ms << LANG[STRID::MSPER] << "| ";
+            dout() << std::setw(COL4_W - LANG[STRID::MGS].size()) << gas_speed << LANG[STRID::MGS] << "| ";
         }
         else if (result.status_code != test.expect_code)
         {
-            Log::Error(dout()) << std::setw(42) << "Fail! Result Status Code Miss Match!";
+            Log::Error(dout()) << std::setw(COL3_W + EDGE_W + COL4_W) << LANG[STRID::RESULT_MISSMATCH];
             dout() << "|\n";
             dout() << ">>>>VM Result:\n";
-            dout() << evmc_status_code_map.at(result.status_code) << "\n";
+            Log::Warning(dout()) << evmc_status_code_map.at(result.status_code) << "\n";
             dout() << evmc_status_code_map.at(test.expect_code) << "\n<<<ECPECT";
             dout() << std::setfill(' ');
         }
         else if (memcmp(result.output_data, test.expect.data(), test.expect.size()) != 0)
         {
-            Log::Error(dout()) << std::setw(42) << "Fail! Output Miss Match!";
+            Log::Error(dout()) << std::setw(COL3_W + EDGE_W + COL4_W) <<LANG[STRID::OUTPUT_MISSMATCH];
             dout() << "|\n";
 
             dout() << ">>>VM Result:\n";
@@ -263,7 +287,7 @@ bool Benchmark::runTests()
         }
         else
         {
-            Log::Error(dout()) << std::setw(42) << "Fail! Log Miss Match! "
+            Log::Error(dout()) << std::setw(COL3_W + EDGE_W + COL4_W) << LANG[STRID::LOG_MISSMATCH]
                                << "|\n";
 
             dout() << ">>>VM Result:\n";
