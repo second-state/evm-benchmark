@@ -57,22 +57,25 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
 
             json = nlohmann::json::parse(json_str.begin(), json_str.end());
 
-            test.name        = json["name"];
-            test.source_path = json["source"];
+            test.name        = json.begin().key();
+            test.source_path = json.back()["exec"]["codeFile"];
             test.json_path   = full_name;
-            test.input       = hex2Uint8Vec(json["input"]);
-            test.expect      = hex2Uint8Vec(json["expect"]);
-            test.log         = hex2Uint8Vec(json["expect_log"]);
+            test.data        = hex2Uint8Vec(json.back()["exec"]["data"]);
+            auto address     = hex2Uint8Vec(json.back()["exec"]["address"]);
+            memcpy(test.address.bytes,address.data(),address.size()*sizeof(uint8_t));
+
+            test.out      = hex2Uint8Vec(json.back()["out"]);
+            test.logs         = hex2Uint8Vec(json.back()["logs"]);
             test.binary      = {};
 
-            if( json.count("contract_name") )
+            if( json.back().count("contract_name") )
             {
-                test.contract_name = json["contract_name"];
+                test.contract_name = json.back()["contract_name"];
             }
 
-            if( json.count("expect_code") )
+            if( json.back().count("VMcode") )
             {
-                test.expect_code = evmc_status_code((int)json["expect_code"]);
+                test.expect_code = evmc_status_code((int)json.back()["VMcode"]);
             }
             else
             {

@@ -1,8 +1,14 @@
 {
-    "name"   : "(Sol Builder)log0",
-    "contract_name" : "HelloWorld",
-    "source" : "simple_log.sol",
-    "input"  : "4e2bf148",
-    "expect" : "",
-    "expect_log" : "70ab2b3e6e915a6471724381d9fac545d78df94fd2a3a5ada7f7a8e615f0f550"
+    "(Sol Builder)log0" : {
+        "contract_name" : "HelloWorld",
+        "exec" : {
+            "address" : "000000000000000000000000004A696E6B656C61",
+            "caller" : "000000000000000000000000004A696E6B656C61",
+            "codeFile" : "simple_log.sol",
+            "data" : "4e2bf148",
+            "value" : "0"
+        },
+        "logs" : "70ab2b3e6e915a6471724381d9fac545d78df94fd2a3a5ada7f7a8e615f0f550",
+        "out" : ""
+    }
 }

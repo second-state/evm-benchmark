@@ -1,8 +1,14 @@
 {
-    "name"   : "wrong expect_code",
-    "source" : "simple_contract.bin",
-    "input"  : "",
-    "expect" : "",
-	"expect_code" : 1,
-    "expect_log" : ""
+    "wrong expect_code" : {
+        "exec" : {
+            "address" : "000000000000000000000000004A696E6B656C61",
+            "caller" : "000000000000000000000000004A696E6B656C61",
+            "codeFile" : "simple_contract.bin",
+            "data" : "",
+            "value" : "0"
+        },
+        "logs" : "",
+        "out" : "",
+        "VMcode" : 1
+    }
 }

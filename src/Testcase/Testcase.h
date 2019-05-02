@@ -25,8 +25,10 @@ struct Testcase
 
     evmc_status_code expect_code;
 
-    std::vector<uint8_t> input;
-    std::vector<uint8_t> expect;
+    evmc_address address;
+
+    std::vector<uint8_t> data;
+    std::vector<uint8_t> out;
     std::vector<uint8_t> binary;
-    std::vector<uint8_t> log;
+    std::vector<uint8_t> logs;
 };

@@ -195,14 +195,14 @@ bool Benchmark::runTests()
         std::chrono::nanoseconds runtime{0};
 
         evmc_message msg = {};
-        const evmc_address addr = {{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x4A, 0x69, 0x6E, 0x6B, 0x65, 0x6C, 0x61}};
+        const evmc_address addr = test.address;
         const evmc_uint256be value = {{0, 0}};
 
         msg.sender = addr;
         msg.destination = addr;
         msg.value = value;
-        msg.input_data = test.input.data();
-        msg.input_size = test.input.size();
+        msg.input_data = test.data.data();
+        msg.input_size = test.data.size();
         msg.gas = 100000000;
         msg.depth = 0;
 
@@ -226,13 +226,13 @@ bool Benchmark::runTests()
                 break;
             }
 
-            if (result.output_size != test.expect.size())
+            if (result.output_size != test.out.size())
             {
                 accept = false;
                 break;
             }
 
-            if (memcmp(result.output_data, test.expect.data(), test.expect.size()) != 0)
+            if (memcmp(result.output_data, test.out.data(), test.out.size()) != 0)
             {
                 accept = false;
                 break;
@@ -240,7 +240,7 @@ bool Benchmark::runTests()
 
             auto logEncode = reinterpret_cast<VirtualEVMCContent *>(context)->getLogRLPencode();
             keccak_256(logs_hash.data(), logs_hash.size(), logEncode.data(), logEncode.size());
-            if (logs_hash != test.log)
+            if (logs_hash != test.logs)
             {
                 accept = false;
                 break;
@@ -263,7 +263,7 @@ bool Benchmark::runTests()
             dout() << evmc_status_code_map.at(test.expect_code) << "\n<<<ECPECT";
             dout() << std::setfill(' ');
         }
-        else if (memcmp(result.output_data, test.expect.data(), test.expect.size()) != 0)
+        else if (memcmp(result.output_data, test.out.data(), test.out.size()) != 0)
         {
             Log::Error(dout()) << std::setw(COL3_W + EDGE_W + COL4_W) <<LANG[STRID::OUTPUT_MISSMATCH];
             dout() << "|\n";
@@ -272,13 +272,13 @@ bool Benchmark::runTests()
             for (size_t i = 0; i < result.output_size; ++i)
             {
                 dout() << std::hex << std::setfill('0') << std::right;
-                if (i < test.expect.size() && result.output_data[i] != test.expect[i])
+                if (i < test.out.size() && result.output_data[i] != test.out[i])
                     Log::Warning(dout()) << std::setw(2) << (unsigned)result.output_data[i];
                 else
                     dout() << std::setw(2) << (unsigned)result.output_data[i];
             }
             dout() << "\n";
-            for (unsigned d : test.expect)
+            for (unsigned d : test.out)
                 dout() << std::hex << std::setw(2) << std::setfill('0') << std::right << d;
             dout() << "\n<<<ECPECT";
 
@@ -294,13 +294,13 @@ bool Benchmark::runTests()
             for (size_t i = 0; i < logs_hash.size(); ++i)
             {
                 dout() << std::hex << std::setfill('0') << std::right;
-                if (i < test.log.size() && logs_hash[i] != test.log[i])
+                if (i < test.logs.size() && logs_hash[i] != test.logs[i])
                     Log::Warning(dout()) << std::setw(2) << (unsigned)logs_hash[i];
                 else
                     dout() << std::setw(2) << (unsigned)logs_hash[i];
             }
             dout() << "\n";
-            for (unsigned d : test.log)
+            for (unsigned d : test.logs)
                 dout() << std::hex << std::setw(2) << std::setfill('0') << std::right << d;
             dout() << "\n<<<ECPECT";
 

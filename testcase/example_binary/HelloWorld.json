@@ -1,7 +1,13 @@
 {
-    "name"   : "Hello World",
-    "source" : "HelloWorld.bin",
-    "input"  : "",
-    "expect" : "0000000000000000000000000000000000000000000000000000000000abcdef",
-    "expect_log" : "1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347"
+    "Hello World" : {
+        "exec" : {
+            "address" : "000000000000000000000000004A696E6B656C61",
+            "caller" : "000000000000000000000000004A696E6B656C61",
+            "codeFile" : "HelloWorld.bin",
+            "data" : "",
+            "value" : "0"
+        },
+        "logs" : "1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+        "out" : "0000000000000000000000000000000000000000000000000000000000abcdef"
+    }
 }
