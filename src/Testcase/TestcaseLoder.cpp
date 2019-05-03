@@ -54,11 +54,9 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
             std::string json_str = GetFileContent(full_name);
             nlohmann::json json;
             Testcase test;
-
             json = nlohmann::json::parse(json_str.begin(), json_str.end());
 
             test.name        = json.begin().key();
-            test.source_path = json.back()["exec"]["codeFile"];
             test.json_path   = full_name;
             test.data        = hex2Uint8Vec(json.back()["exec"]["data"]);
             auto address     = hex2Uint8Vec(json.back()["exec"]["address"]);
@@ -81,48 +79,58 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
             {
                 test.expect_code = EVMC_SUCCESS;
             }
-            
-            fs::path source_path = test.source_path;
-            if(source_path.is_relative()){
-                source_path = fs::proximate(file.remove_filename()) /source_path;
-            }
-            source_path = fs::absolute(source_path);
-            test.source_path = source_path.string();
 
-            if( !fs::is_regular_file(test.source_path) )
-            {
-                derr << file << " Ignored!" << std::endl;
-                derr << "   Can not open source : " << test.source_path << std::endl;
-                return ;
-            }
-
-            if( !source_path.has_extension() )
-            {
-                derr << file << " Ignored!" << std::endl;
-                derr << "   No Builder : " << test.source_path << std::endl;
-                return ;
-            }
-
-            std::string sext = source_path.extension().string();
             bool isbuilt = false;
-            for(Builder *ptr:m_builder)
+            if(json.back()["exec"].count("codeFile"))
             {
-                if( contain( ptr->acceptExtensions(), sext ) )
-                {
-                    if( ptr->build(source_path, test.contract_name) )
-                    {
-                        test.binary = hex2Uint8Vec(ptr->getBinary());
-                        test.state = TestcaseState::Ready;
-                    }
-                    else
-                    {
-                        test.state = TestcaseState::CompileFail;
-                        derr << file << " Ignored!" << std::endl;
-                        derr<<"    Build "<< full_name <<" with " << ptr->getClassName() << " FAIL!" <<std::endl;
-                    }
-                    isbuilt = true;
-                    break;
+                test.source_path = json.back()["exec"]["codeFile"];
+                fs::path source_path = test.source_path;
+                if(source_path.is_relative()){
+                    source_path = fs::proximate(file.remove_filename()) /source_path;
                 }
+                source_path = fs::absolute(source_path);
+                test.source_path = source_path.string();
+
+                if( !fs::is_regular_file(test.source_path) )
+                {
+                    derr << file << " Ignored!" << std::endl;
+                    derr << "   Can not open source : " << test.source_path << std::endl;
+                    return ;
+                }
+
+                if( !source_path.has_extension() )
+                {
+                    derr << file << " Ignored!" << std::endl;
+                    derr << "   No Builder : " << test.source_path << std::endl;
+                    return ;
+                }
+
+                std::string sext = source_path.extension().string();
+                for(Builder *ptr:m_builder)
+                {
+                    if( contain( ptr->acceptExtensions(), sext ) )
+                    {
+                        if( ptr->build(source_path, test.contract_name) )
+                        {
+                            test.binary = hex2Uint8Vec(ptr->getBinary());
+                            test.state = TestcaseState::Ready;
+                        }
+                        else
+                        {
+                            test.state = TestcaseState::CompileFail;
+                            derr << file << " Ignored!" << std::endl;
+                            derr<<"    Build "<< full_name <<" with " << ptr->getClassName() << " FAIL!" <<std::endl;
+                        }
+                        isbuilt = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                test.binary = hex2Uint8Vec(json.back()["exec"]["code"]);
+                test.state = TestcaseState::Ready;
+                isbuilt = true;
             }
 
             if( !isbuilt )
