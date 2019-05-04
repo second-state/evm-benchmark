@@ -39,6 +39,8 @@ After build, `ejudge` executable file will place at `build/src/ejudge`
 
 ## How to add testcase
 
+See more information from [tutorial](Tutorial.md)
+
 ### source file
 
 The filename extension of the source file must be `.bin` or `.sol`, representing binary source and solidity source.
@@ -139,17 +141,3 @@ There are two different error message:
 1. Result Status Code Miss Match<br>If VM result code is not expected, we will show the difference between VM result code and expected result code.
 2. Output Miss Match!<br>If VM output is not expected, we will show the difference between VM output code and expected output.
 
-## Todos
-
-### Build system
-
-- [ ] Windows MSVC
-- [ ] Windows GCC (Can not fix on gcc 8.1)
-- [x] Ubuntu 16 GCC
-- [ ] Ubuntu 16 Clang
-- [ ] MacOS GCC
-- [ ] MacOS Clang
-
-### Filesystem
-
-- [ ] implement ~~~`recursive_directory_iterator`~~~ `filesystem` for old compiler
