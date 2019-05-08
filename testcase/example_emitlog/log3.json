@@ -1,5 +1,5 @@
 {
-    "(Sol Builder)log3 error" : {
+    "(Sol Builder)log3" : {
         "contract_name" : "HelloWorld",
         "exec" : {
             "address" : "000000000000000000000000004A696E6B656C61",

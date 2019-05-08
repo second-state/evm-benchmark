@@ -61,6 +61,8 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
             test.data        = hex2Uint8Vec(json.back()["exec"]["data"]);
             auto address     = hex2Uint8Vec(json.back()["exec"]["address"]);
             memcpy(test.address.bytes,address.data(),address.size()*sizeof(uint8_t));
+            auto caller      = hex2Uint8Vec(json.back()["exec"]["caller"]);
+            memcpy(test.caller.bytes,caller.data(),caller.size()*sizeof(uint8_t));
 
             test.out      = hex2Uint8Vec(json.back()["out"]);
             test.logs         = hex2Uint8Vec(json.back()["logs"]);

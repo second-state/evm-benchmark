@@ -195,11 +195,10 @@ bool Benchmark::runTests()
         std::chrono::nanoseconds runtime{0};
 
         evmc_message msg = {};
-        const evmc_address addr = test.address;
         const evmc_uint256be value = {{0, 0}};
 
-        msg.sender = addr;
-        msg.destination = addr;
+        msg.sender = test.caller;
+        msg.destination = test.address;
         msg.value = value;
         msg.input_data = test.data.data();
         msg.input_size = test.data.size();

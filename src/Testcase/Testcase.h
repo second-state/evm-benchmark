@@ -25,7 +25,7 @@ struct Testcase
 
     evmc_status_code expect_code;
 
-    evmc_address address;
+    evmc_address address, caller;
 
     std::vector<uint8_t> data;
     std::vector<uint8_t> out;

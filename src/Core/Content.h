@@ -27,21 +27,6 @@ struct VirtualEVMCContent : evmc_context
         evmc_address addr;
         std::vector<evmc_bytes32> topics;
         std::vector<uint8_t> data;
-        bool operator==(const vmlog &b) const
-        {
-            if (memcmp(addr.bytes, b.addr.bytes, sizeof(addr.bytes)))
-                return false;
-            if (data != b.data)
-                return false;
-            if (topics.size() != b.topics.size())
-                return false;
-            for (size_t i = 0; i < topics.size(); ++i)
-            {
-                if (memcmp(topics[i].bytes, b.topics[i].bytes, sizeof(topics[i].bytes)))
-                    return false;
-            }
-            return true;
-        }
         RLPitem to_RLPitem() const
         {
             vector<RLPitem> res(3);
@@ -50,10 +35,7 @@ struct VirtualEVMCContent : evmc_context
             res[1].setList(vector<RLPitem>());
             for (const auto t : topics)
             {
-                size_t topicSize = 32;
-                while (topicSize > 1 && t.bytes[topicSize - 1] == 0)
-                    --topicSize;
-                topic.setStr(vector<uint8_t>(t.bytes, t.bytes + topicSize));
+                topic.setStr(vector<uint8_t>(t.bytes, t.bytes + 32));
                 res[1].L.emplace_back(topic);
             }
             res[2].setStr(data);
