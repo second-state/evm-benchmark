@@ -1,7 +1,9 @@
 ejudge tutorial
 ==========
 
-This tutorial help developers to add a new testcase for ejudge
+This tutorial help developers to add new testcases for ejudge
+
+ejudge support most setting in [ethereum-tests](https://ethereum-tests.readthedocs.io/en/latest/test_types/vm_tests.html).
 
 ## Add a binary code testcase
 

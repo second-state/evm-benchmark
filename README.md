@@ -135,3 +135,17 @@ There are two different error message:
 1. Result Status Code Miss Match<br>If VM result code is not expected, we will show the difference between VM result code and expected result code.
 2. Output Miss Match!<br>If VM output is not expected, we will show the difference between VM output code and expected output.
 
+## Unimplemented functions
+
+Becuase some functions in content table are not implemented, some tests are unavailible and the result maybe unpredictable.
+
+
+* ```call``` : althrough opcode ```STATICCALL(0xfa)``` is working now, but it dose not check errors if existing any side effect. others opcode like ```call```, ```delegatecall```, ```create```, ```create2``` etc. are not working.
+
+* ```selfdestruct``` : opcode ```SUICIDE``` is not working.
+
+* ```copy_code``` : opcode ```EXTCODECOPY``` is not working.
+
+* ```get_tx_context``` : all information like ```TIMESTAMP```, ```NUMBER```, ```DIFFICULTY```  pass by ```TxContext``` are not working.
+
+* ```get_block_hash``` : opcode ```BLOCKHASH``` is not working.
