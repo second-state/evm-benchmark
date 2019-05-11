@@ -26,6 +26,8 @@ struct Testcase
 
     evmc_status_code expect_code;
 
+    int testtimes;
+    
     std::vector<uint8_t> data;
     std::vector<uint8_t> out;
     std::vector<uint8_t> binary;

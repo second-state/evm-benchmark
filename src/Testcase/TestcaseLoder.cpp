@@ -57,19 +57,25 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
             nlohmann::json &json = test.json;
             json = nlohmann::json::parse(json_str.begin(), json_str.end());
 
-            test.name        = json.begin().key();
-            test.json_path   = full_name;
-            test.data        = hex2Uint8Vec(json.back()["exec"]["data"]);
+            test.name = json.begin().key();
+            test.json_path = full_name;
+            test.data = hex2Uint8Vec(json.back()["exec"]["data"]);
+
+            test.testtimes = 100;
+            if( json.back()["exec"].count("testTime"))
+            {
+                test.testtimes = json.back()["exec"]["testTime"];
+            }
 
             if( json.back().count("out") )
             {
-                test.out     = hex2Uint8Vec(json.back()["out"]);
+                test.out = hex2Uint8Vec(json.back()["out"]);
             }
             if( json.back().count("logs") )
             {
-                test.logs    = hex2Uint8Vec(json.back()["logs"]);
+                test.logs = hex2Uint8Vec(json.back()["logs"]);
             }
-            test.binary      = {};
+            test.binary = {};
 
             if( json.back().count("contract_name") )
             {

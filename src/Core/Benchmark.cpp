@@ -148,7 +148,6 @@ bool Benchmark::runTests()
     const int COL3_W = 20;
     const int COL4_W = 20;
     int counter = 0;
-    int testtimes = 100;
     bool all_accept = true;
 
     dout() << std::setprecision(10);
@@ -201,7 +200,7 @@ bool Benchmark::runTests()
         evmc_result result;
         evmc_context *context;
         vector<uint8_t> logs_hash(32);
-        for (int i = 0; i < testtimes; ++i)
+        for (int i = 0; i < test.testtimes; ++i)
         {
             std::chrono::nanoseconds temp;
             result = m_vm.execute(test, msg, temp, context);
@@ -242,8 +241,8 @@ bool Benchmark::runTests()
         }
         if (accept)
         {
-            double runtime_once_ms = 1.0 * (runtime.count() + 1) / testtimes / 1E9 * 1000;
-            double gas_speed = 1.0 * gas_used / 1E6 / (1.0 * (runtime.count() + 1) / testtimes / 1E9);
+            double runtime_once_ms = 1.0 * (runtime.count() + 1) / test.testtimes / 1E9 * 1000;
+            double gas_speed = 1.0 * gas_used / 1E6 / (1.0 * (runtime.count() + 1) / test.testtimes / 1E9);
             dout() << std::setw(COL3_W - LANG[STRID::MSPER].size()) << runtime_once_ms << LANG[STRID::MSPER] << "| ";
             dout() << std::setw(COL4_W - LANG[STRID::MGS].size()) << gas_speed << LANG[STRID::MGS] << "| ";
         }
