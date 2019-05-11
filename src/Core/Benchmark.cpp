@@ -194,16 +194,9 @@ bool Benchmark::runTests()
         bool accept = true;
         std::chrono::nanoseconds runtime{0};
 
-        evmc_message msg = {};
-        const evmc_uint256be value = {{0, 0}};
+        evmc_message msg;
 
-        msg.sender = test.caller;
-        msg.destination = test.address;
-        msg.value = value;
-        msg.input_data = test.data.data();
-        msg.input_size = test.data.size();
-        msg.gas = 100000000;
-        msg.depth = 0;
+        int64_t gas_used = 0;
 
         evmc_result result;
         evmc_context *context;
@@ -211,7 +204,7 @@ bool Benchmark::runTests()
         for (int i = 0; i < testtimes; ++i)
         {
             std::chrono::nanoseconds temp;
-            result = m_vm.execute(test.binary, msg, temp, context);
+            result = m_vm.execute(test, msg, temp, context);
             runtime += temp;
 
             if (result.status_code != test.expect_code)
@@ -244,10 +237,11 @@ bool Benchmark::runTests()
                 accept = false;
                 break;
             }
+
+            gas_used += msg.gas - result.gas_left;
         }
         if (accept)
         {
-            auto gas_used = msg.gas - result.gas_left;
             double runtime_once_ms = 1.0 * (runtime.count() + 1) / testtimes / 1E9 * 1000;
             double gas_speed = 1.0 * gas_used / 1E6 / (1.0 * (runtime.count() + 1) / testtimes / 1E9);
             dout() << std::setw(COL3_W - LANG[STRID::MSPER].size()) << runtime_once_ms << LANG[STRID::MSPER] << "| ";

@@ -5,7 +5,7 @@
             "caller" : "cd1722f3947def4cf144679da39c4c32bdc35681",
             "codeFile" : "log0_emptyMem.bin",
             "data" : "b965c84b00000000000000000000000000000000000000000000000000000000043ed6f2",
-            "value" : "0"
+            "value" : "0x0000000000000000"
         },
         "logs" : "ea63b4dbbdbca1bd985580a0c3b6f35a4955d4d4cf0b4d903003cdfc4c40ba1c",
         "out" : ""

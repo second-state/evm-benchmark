@@ -176,8 +176,8 @@ class EVMCContent
 
     static evmc_tx_context get_tx_context(evmc_context *context)
     {
-        (void)context;
-        evmc_tx_context result{};
+        VirtualEVMCContent *host = reinterpret_cast<VirtualEVMCContent *>(context);
+        evmc_tx_context result = host->tx_context;
         return result;
     }
 

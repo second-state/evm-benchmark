@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <evmc/evmc.h>
+#include <nlohmann/json.hpp>
 
 #include <Core/Content.h>
 
@@ -25,10 +26,10 @@ struct Testcase
 
     evmc_status_code expect_code;
 
-    evmc_address address, caller;
-
     std::vector<uint8_t> data;
     std::vector<uint8_t> out;
     std::vector<uint8_t> binary;
     std::vector<uint8_t> logs;
+    
+    nlohmann::json json;
 };

@@ -6,7 +6,7 @@
             "caller" : "000000000000000000000000004A696E6B656C61",
             "codeFile" : "simple_log.sol",
             "data" : "24aa0de8",
-            "value" : "0"
+            "value" : "0x0000000000000000"
         },
         "logs" : "3d1ca41aedfa1a49a75bea323d2fc87227c87c166c4ef9bb9c7a14c1f3138dc4",
         "out" : ""

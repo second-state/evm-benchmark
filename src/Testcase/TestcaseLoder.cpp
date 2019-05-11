@@ -52,20 +52,23 @@ bool TestcaseLoader::load(std::string _base, std::ostream &derr)
                 return ;
 
             std::string json_str = GetFileContent(full_name);
-            nlohmann::json json;
+
             Testcase test;
+            nlohmann::json &json = test.json;
             json = nlohmann::json::parse(json_str.begin(), json_str.end());
 
             test.name        = json.begin().key();
             test.json_path   = full_name;
             test.data        = hex2Uint8Vec(json.back()["exec"]["data"]);
-            auto address     = hex2Uint8Vec(json.back()["exec"]["address"]);
-            memcpy(test.address.bytes,address.data(),address.size()*sizeof(uint8_t));
-            auto caller      = hex2Uint8Vec(json.back()["exec"]["caller"]);
-            memcpy(test.caller.bytes,caller.data(),caller.size()*sizeof(uint8_t));
 
-            test.out      = hex2Uint8Vec(json.back()["out"]);
-            test.logs         = hex2Uint8Vec(json.back()["logs"]);
+            if( json.back().count("out") )
+            {
+                test.out     = hex2Uint8Vec(json.back()["out"]);
+            }
+            if( json.back().count("logs") )
+            {
+                test.logs    = hex2Uint8Vec(json.back()["logs"]);
+            }
             test.binary      = {};
 
             if( json.back().count("contract_name") )

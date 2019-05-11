@@ -46,3 +46,17 @@ std::string uint8Arr2hexString(const uint8_t *arr, size_t n)
     }
     return res;
 }
+
+int64_t hex2int64(const std::string &hexs)
+{
+    int64_t res = 0;
+    std::size_t len = hexs.size();
+    std::size_t begin = hexs.find("0x")==0 ? 2 : 0;
+
+    for(std::size_t i = begin ; i < len; ++i)
+    {
+        assert( std::isxdigit(hexs[i]) );
+        res = res * 16 + hex2Uint(hexs[i]);
+    }
+    return res;
+}

@@ -5,7 +5,7 @@
             "caller" : "000000000000000000000000004A696E6B656C61",
             "codeFile" : "simple_contract.bin",
             "data" : "",
-            "value" : "0"
+            "value" : "0x0000000000000000"
         },
         "logs" : "",
         "out" : "",

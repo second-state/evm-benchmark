@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Core/Content.h>
+#include <Testcase/Testcase.h>
 #include <evmc/helpers.h>
 #include <evmc/loader.h>
 #include <evmc/evmc.h>
@@ -31,5 +32,5 @@ public:
         free((uint8_t*)result->output_data);
     }
 
-    evmc_result execute(const std::vector<uint8_t> &opcode, const evmc_message &msg, std::chrono::nanoseconds &runtime, evmc_context *&context);
+    evmc_result execute(const Testcase &testcase, evmc_message &msg, std::chrono::nanoseconds &runtime, evmc_context *&context);
 };

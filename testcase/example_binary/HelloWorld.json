@@ -1,13 +1,39 @@
 {
     "Hello World" : {
+        "env" : {
+            "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
+            "currentDifficulty" : "0x0100",
+            "currentGasLimit" : "0x989680",
+            "currentNumber" : "0x00",
+            "currentTimestamp" : "0x01"
+        },
         "exec" : {
             "address" : "000000000000000000000000004A696E6B656C61",
             "caller" : "000000000000000000000000004A696E6B656C61",
             "codeFile" : "HelloWorld.bin",
             "data" : "",
-            "value" : "0"
+            "gas" : "0x0f4240",
+            "gasPrice" : "0x5af3107a4000",
+            "origin" : "000000000000000000000000004A696E6B656C61",
+            "value" : "0x0000000000000000"
         },
         "logs" : "1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-        "out" : "0000000000000000000000000000000000000000000000000000000000abcdef"
+        "out" : "0000000000000000000000000000000000000000000000000000000000abcdef",
+        "post" : {
+            "000000000000000000000000004A696E6B656C61" : {
+                "balance" : "0",
+                "nonce" : "0x00",
+                "storage" : {
+                }
+            }
+        },
+        "pre" : {
+            "000000000000000000000000004A696E6B656C61" : {
+                "balance" : "0",
+                "nonce" : "0x00",
+                "storage" : {
+                }
+            }
+        }
     }
 }
