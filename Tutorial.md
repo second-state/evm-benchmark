@@ -121,10 +121,10 @@ HelloWorld.json :
 }
 ```
 
-Most Arguments just like binary code testcase format, but there are something shoudld be notice :
+Most Arguments just like binary code testcase format, but there are something should be notice :
 
 * ```codeFile``` : If use  ```*.sol``` for input, ejudge will build it with solidity compiler to generate binary code.
-* ```data``` : usually a contract required a input to determine  which function should be execute. Some tools like Remix can provide such information in simple method.
+* ```data``` : usually, a contract required a input to determine which function should be execute. Some tools like ```Remix``` can provide such information with simple steps.
 
 Then, put both files in a folder named ```testcase```.
 
@@ -172,7 +172,7 @@ Testcases: 1
 =========================================================================
 ```
 
-* Quick fix : if result is Compile Fail, it meaning ```SOLIDITYC``` is not correctly. Please check compiler information.
+* Quick fix : if result is Compile Fail, it meaning ```SOLIDITYC``` dp not correctly set. Please check compiler information output.
 
 ```
 /mnt/d/User/Documents/Git/EthBrenchmark/example/scripts/SoldityBuilder.sh: line 9: ../bin/solc: No such file or directory
