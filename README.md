@@ -146,6 +146,4 @@ Becuase some functions in content table are not implemented, some tests are unav
 
 * ```copy_code``` : opcode ```EXTCODECOPY``` is not working.
 
-* ```get_tx_context``` : all information like ```TIMESTAMP```, ```NUMBER```, ```DIFFICULTY```  pass by ```TxContext``` are not working.
-
 * ```get_block_hash``` : opcode ```BLOCKHASH``` is not working.
