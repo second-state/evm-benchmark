@@ -150,7 +150,7 @@ Becuase some functions in content table are not implemented, some tests are unav
 
 ## Result Compare With VMTest
 
-Bscause SELFDESTRUCT (0xff) unimp, follow tests will failed
+Bscause SELFDESTRUCT (0xff) unimplemented, follow tests will failed:
 
 * suicide0
 * suicideNotExistingAccount
