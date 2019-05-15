@@ -67,7 +67,7 @@ evmc_result VMInterface::execute(const Testcase &testcase, evmc_message &msg, st
     memcpy(msg.sender.bytes,caller.data(),caller.size()*sizeof(uint8_t));
 
     auto value = hex2Uint8Vec(testcase.json.back()["exec"]["value"]);
-    memcpy(msg.value.bytes,value.data(),value.size()*sizeof(uint8_t));
+    memcpy(msg.value.bytes+32-value.size(),value.data(),value.size()*sizeof(uint8_t));
 
     msg.input_data = testcase.data.data();
     msg.input_size = testcase.data.size();
@@ -85,7 +85,7 @@ evmc_result VMInterface::execute(const Testcase &testcase, evmc_message &msg, st
 
     if(testcase.json.back()["exec"].count("gasPrice")){
         auto gasPrice = hex2Uint8Vec(testcase.json.back()["exec"]["gasPrice"]);
-        memcpy(tx_context.tx_gas_price.bytes,gasPrice.data(),gasPrice.size()*sizeof(uint8_t));
+        memcpy(tx_context.tx_gas_price.bytes+32-gasPrice.size(),gasPrice.data(),gasPrice.size()*sizeof(uint8_t));
     }
 
     if(testcase.json.back()["exec"].count("origin")){
@@ -97,7 +97,7 @@ evmc_result VMInterface::execute(const Testcase &testcase, evmc_message &msg, st
         auto coinbase = hex2Uint8Vec(testcase.json.back()["env"]["currentCoinbase"]);
         memcpy(tx_context.block_coinbase.bytes,coinbase.data(),coinbase.size()*sizeof(uint8_t));
         auto difficulty = hex2Uint8Vec(testcase.json.back()["env"]["currentDifficulty"]);
-        memcpy(tx_context.block_difficulty.bytes,difficulty.data(),difficulty.size()*sizeof(uint8_t));
+        memcpy(tx_context.block_difficulty.bytes+32-difficulty.size(),difficulty.data(),difficulty.size()*sizeof(uint8_t));
 
         tx_context.block_gas_limit = hex2int64(testcase.json.back()["env"]["currentGasLimit"]);
         tx_context.block_number = hex2int64(testcase.json.back()["env"]["currentNumber"]);

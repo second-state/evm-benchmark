@@ -251,8 +251,8 @@ bool Benchmark::runTests()
             Log::Error(dout()) << std::setw(COL3_W + EDGE_W + COL4_W) << LANG[STRID::RESULT_MISSMATCH];
             dout() << "|\n";
             dout() << ">>>>VM Result:\n";
-            Log::Warning(dout()) << evmc_status_code_map.at(result.status_code) << "\n";
-            dout() << evmc_status_code_map.at(test.expect_code) << "\n<<<ECPECT";
+            Log::Warning(dout()) << evmc_status_code_map.at(result.status_code) << ' '<< result.status_code << "\n";
+            dout() << evmc_status_code_map.at(test.expect_code) << ' '<< test.expect_code << "\n<<<ECPECT";
             dout() << std::setfill(' ');
         }
         else if (memcmp(result.output_data, test.out.data(), test.out.size()) != 0)

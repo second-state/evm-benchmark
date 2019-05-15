@@ -1,3 +1,7 @@
+### ejudge 1.2.0 (2019-05-15)
+ * Add all vmtest from ethereum/tests
+ * Fix vmtest no evmc_status_code error
+
 ### ejudge 1.1.0 (2019-04-??)
 
 UI:
