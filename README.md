@@ -147,3 +147,19 @@ Becuase some functions in content table are not implemented, some tests are unav
 * ```copy_code``` : opcode ```EXTCODECOPY``` is not working.
 
 * ```get_block_hash``` : opcode ```BLOCKHASH``` is not working.
+
+## Result Compare With VMTest
+
+Bscause SELFDESTRUCT (0xff) unimp, follow tests will failed
+
+* suicide0
+* suicideNotExistingAccount
+* suicideSendEtherToMe
+    
+Under ```geth``` also unmatched result ( test with ```evm --codefile a.bin run``` )
+
+* gasOverFlow error: invalid jump destination (JUMPDEST) 18446744073709551638
+* jumpTo1InstructionafterJump: run success
+* JDfromStorageDynamicJump0_jumpdest0: error: invalid jump destination (ADD) 7
+* JDfromStorageDynamicJumpiAfterStop: error: invalid jump destination (JUMPI) 8
+* sstore_load_2: run success
