@@ -29,6 +29,7 @@
         "gas" : "0x013831",
         "logs" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
         "out" : "0x",
+        "VMcode" : 8,
         "post" : {
             "0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" : {
                 "balance" : "0x152d02c7e14af6800000",

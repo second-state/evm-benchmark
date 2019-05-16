@@ -217,24 +217,28 @@ bool Benchmark::runTests()
                 break;
             }
 
-            if (result.output_size != test.out.size())
-            {
-                accept = false;
-                break;
+            if (test.json.back().count("out")){
+                if (result.output_size != test.out.size())
+                {
+                    accept = false;
+                    break;
+                }
+
+                if (memcmp(result.output_data, test.out.data(), test.out.size()) != 0)
+                {
+                    accept = false;
+                    break;
+                }
             }
 
-            if (memcmp(result.output_data, test.out.data(), test.out.size()) != 0)
-            {
-                accept = false;
-                break;
-            }
-
-            auto logEncode = reinterpret_cast<VirtualEVMCContent *>(context)->getLogRLPencode();
-            keccak_256(logs_hash.data(), logs_hash.size(), logEncode.data(), logEncode.size());
-            if (logs_hash != test.logs)
-            {
-                accept = false;
-                break;
+            if (test.json.back().count("logs")){
+                auto logEncode = reinterpret_cast<VirtualEVMCContent *>(context)->getLogRLPencode();
+                keccak_256(logs_hash.data(), logs_hash.size(), logEncode.data(), logEncode.size());
+                if (logs_hash != test.logs)
+                {
+                    accept = false;
+                    break;
+                }
             }
 
             gas_used += msg.gas - result.gas_left;
